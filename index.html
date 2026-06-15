@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Campo's Visión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: { appleDark: '#000000', appleLight: '#f5f5f7', appleGray: '#1d1d1f' },
+                fontFamily: { 
+                    sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    display: ['Montserrat', 'sans-serif'],
+                    serif: ['Cormorant Garamond', 'serif'] 
+                }
+            }}
+        }
+    </script>
+    <link rel="icon" type="image/png" href="imagenes/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* === APPLE DESIGN SYSTEM VARIABLES === */
+        :root {
+            --apple-radius: 32px;
+            --pill-radius: 9999px;
+            --bg-main: #f5f5f7;
+            --text-main: #1d1d1f;
+            --text-sec: #86868b;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --accent: #000000;
+            --accent-inv: #ffffff;
+        }
+
+        html.dark {
+            --bg-main: #000000;
+            --text-main: #f5f5f7;
+            --text-sec: #86868b;
+            --glass-bg: rgba(29, 29, 31, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #ffffff;
+            --accent-inv: #000000;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Multilenguaje */
+        html[lang="es"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-es { display: none !important; }
+
+        /* === APPLE GLASSMORPHISM === */
+        .glass-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--pill-radius);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--apple-radius);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .btn-apple {
+            border-radius: var(--pill-radius);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+        }
+        .btn-apple:hover { transform: scale(1.02); }
+
+        /* === FUNCIONALIDADES ORIGINALES === */
+        #preloader {
+            position: fixed; inset: 0; background: var(--bg-main); z-index: 99999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, filter 0.8s ease;
+        }
+        #preloader h1 { font-family: 'Montserrat', sans-serif; font-size: 3rem; font-weight: 800; letter-spacing: -0.05em; }
+        .fade-out { opacity: 0; filter: blur(10px); pointer-events: none; }
+
+        .film-grain {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9990; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        @media (pointer: fine) {
+            body, a, button, input { cursor: none; }
+            .cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+            .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s; }
+            body.hovering .cursor-dot { width: 0; height: 0; }
+            body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(128,128,128,0.2); backdrop-filter: blur(4px); border-color: transparent; }
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .slider-container { position: relative; width: 100%; height: 60vh; border-radius: var(--apple-radius); overflow: hidden; }
+        .img-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .img-after { width: 50%; border-right: 2px solid var(--accent); z-index: 10; }
+        .slider-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; opacity: 0; cursor: ew-resize; }
+        .slider-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: var(--accent); color: var(--accent-inv); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 15; pointer-events: none; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+
+        /* Animación de Carrusel Infinito Ajustada */
+        @keyframes scrollLogo {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .logo-track {
+            display: flex;
+            width: 200%;
+            animation: scrollLogo 15s linear infinite; /* Más rápido */
+        }
+        .logo-track:hover { animation-play-state: paused; }
+
+        .mask-edges {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+
+        /* Posición Ajustada para Modal del Chat (Arriba de los botones) */
+        .chat-modal { position: fixed; bottom: 160px; right: 24px; width: 320px; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9998; }
+        .chat-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+        .chat-msg { padding: 12px 16px; border-radius: 20px; font-size: 0.85rem; max-width: 85%; line-height: 1.4; margin-bottom: 8px; }
+        .msg-ai { background: var(--glass-border); color: var(--text-main); border-bottom-left-radius: 4px; align-self: flex-start; }
+        .msg-user { background: var(--accent); color: var(--accent-inv); border-bottom-right-radius: 4px; align-self: flex-end; }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot interactive-el hidden md:block"></div>
+    <div class="cursor-outline interactive-el hidden md:block"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <h1 class="text-main">Campo's Vision.</h1>
+    </div>
+
+    <!-- Film Grain Superpuesto -->
+    <div class="film-grain"></div>
+
+    <!-- Video de Fondo Global -->
+    <video autoplay loop muted playsinline class="fixed top-0 left-0 w-full h-full object-cover -z-10 opacity-20 dark:opacity-30">
+        <source src="imagenes/VideoFondo.mp4" type="video/mp4">
+    </video>
+
+
+    <!-- Navbar Dynamic Island Style -->
+    <nav class="fixed w-full z-50 top-6 px-4 md:px-8">
+        <div class="glass-nav max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="font-display font-bold text-xl tracking-tight interactive-el">Campo's Vision.</a>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="index.html" class="text-[var(--text-main)] font-semibold interactive-el"><span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                <a href="nosotros.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                <a href="servicios.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                <a href="portafolio.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                <a href="contacto.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button id="langToggle" class="text-sm font-semibold w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <span class="lang-es">EN</span><span class="lang-en">ES</span>
+                </button>
+                <button id="themeToggle" class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-24 relative">
+        <div class="glass-panel p-10 md:p-16 max-w-4xl w-full flex flex-col items-center reveal">
+            <span class="px-4 py-1.5 rounded-full bg-[var(--glass-border)] text-xs font-semibold tracking-widest uppercase mb-6">
+                <span class="lang-es">Productora Audiovisual</span><span class="lang-en">Film Production</span>
+            </span>
+            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tighter mb-6 leading-tight">
+                <span class="lang-es">Capturando Historias con Intención</span><span class="lang-en">Capturing Stories with Intention</span>
+            </h1>
+            <p class="text-textmain/90 font-semibold text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                <span class="lang-es">Convertimos momentos irrepetibles en recuerdos que se sienten para siempre.</span>
+                <span class="lang-en">We convert irreplaceable moments into memories that last forever.</span>
+            </p>
+            </br>
+            </br>
+            <a href="portafolio.html" class="bg-[var(--accent)] text-[var(--accent-inv)] px-8 py-4 btn-apple font-semibold interactive-el">
+                <span class="lang-es">Explorar Portafolio</span><span class="lang-en">Explore Portfolio</span>
+            </a>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-50">
+            <span class="text-xs uppercase tracking-widest mb-2"><span class="lang-es">Scroll</span><span class="lang-en">Scroll</span></span>
+            <div class="w-[1px] h-12 bg-[var(--text-main)] overflow-hidden relative">
+                <div class="w-full h-full bg-[var(--bg-main)] absolute top-0 left-0 animate-[scrolldown_1.5s_infinite]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats / Bento Grid Metrics -->
+    <section class="max-w-6xl mx-auto px-4 py-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+            <div class="glass-panel p-10 text-center flex flex-col justify-center interactive-el hover:scale-[1.02] transition-transform">
+                <h3 class="text-5xl font-display font-bold mb-2">+200</h3>
+                <p class="text-[var(--text-sec)] font-medium"><span class="lang-es">Proyectos Entregados</span><span class="lang-en">Delivered Projects</span></p>
+            </div>
+            <div class="glass-panel p-10 text-center flex flex-col justify-center interactive-el hover:scale-[1.02] transition-transform">
+                <h3 class="text-5xl font-display font-bold mb-2">4K</h3>
+                <p class="text-[var(--text-sec)] font-medium"><span class="lang-es">Resolución Nativa</span><span class="lang-en">Native Resolution</span></p>
+            </div>
+            <div class="glass-panel p-10 text-center flex flex-col justify-center interactive-el hover:scale-[1.02] transition-transform">
+                <h3 class="text-5xl font-display font-bold mb-2">100%</h3>
+                <p class="text-[var(--text-sec)] font-medium"><span class="lang-es">Satisfacción Cliente</span><span class="lang-en">Client Satisfaction</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosotros Preview CON EFECTO B/N A COLOR -->
+    <section class="max-w-6xl mx-auto px-4 py-20 reveal">
+        <div class="glass-panel p-10 md:p-16 flex flex-col md:flex-row gap-12 items-center">
+            <div class="w-full md:w-1/2">
+                <h2 class="text-4xl font-display font-bold mb-6">
+                    <span class="lang-es">El arte de observar.</span>
+                    <span class="lang-en">The art of looking.</span>
+                </h2>
+                <p class="text-textmain/90 font-semibold text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                    <span class="lang-es">Campo’s Vision no cree en las imágenes vacías ni en los registros automáticos.
+                    Cree en las historias que se construyen a partir de miradas, gestos, decisiones y momentos irrepetibles.
+                    Nuestro trabajo parte del silencio, de la observación y del respeto por lo auténtico.
+                    No buscamos imponer una forma de ver, sino descubrir la esencia de cada historia y traducirla
+                    en imágenes honestas, sensibles y duraderas.</span>
+                    
+                    <span class="lang-en">Campo’s Vision does not believe in empty images or automatic records.
+                    It believes in stories built from glances, gestures, decisions, and unrepeatable moments.
+                    Our work begins with silence, observation, and respect for what is authentic.
+                    We do not seek to impose a way of seeing, but to discover the essence of each story and turn it into honest, sensitive, and lasting images.
+                    images honest, sensitive and durable.</span>
+                </p>
+                </br>
+                </br>
+                <a href="nosotros.html" class="btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-8 py-3 inline-block font-semibold hover:bg-[var(--text-main)] hover:text-[var(--bg-main)] interactive-el">
+                    <span class="lang-es">Conoce al equipo</span><span class="lang-en">Meet the team</span>
+                </a>
+            </div>
+            <div class="w-full md:w-1/2 flex gap-4 h-80">
+                <img src="imagenes/BRIAN.jpg" class="w-1/2 h-full object-cover rounded-[24px] filter grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer" alt="Brian Campo">
+                <img src="imagenes/CAMPO'S VISION.jpg" class="w-1/2 h-full object-cover rounded-[24px] mt-8 filter grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer" alt="Miguel Campo">
+            </div>
+        </div>
+    </section>
+
+    <!-- FRASE CON BOTONES: WhatsApp y Contacto -->
+    <section class="max-w-6xl mx-auto px-4 py-20 reveal text-center">
+        <h2 class="text-5xl md:text-7xl font-display font-bold tracking-tighter text-[var(--text-main)] mb-10">
+            <span class="lang-es">Tu historia <br><span class="text-[var(--text-sec)]">merece ser contada.</span></span>
+            <span class="lang-en">Your story <br><span class="text-[var(--text-sec)]">deserves to be told.</span></span>
+        </h2>
+        
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <!-- Botón de WhatsApp -->
+            <a href="https://wa.me/573000000000" target="_blank" class="btn-apple bg-[#25D366] text-white px-8 py-4 font-semibold interactive-el flex items-center gap-2 hover:bg-[#1ebd5a] hover:scale-105 transition-all">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span class="lang-es">Escríbenos por WhatsApp</span><span class="lang-en">Message on WhatsApp</span>
+            </a>
+            <!-- Botón de Formulario (Contacto) -->
+            <a href="contacto.html" class="btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-8 py-4 font-semibold interactive-el flex items-center gap-2 hover:bg-[var(--text-main)] hover:text-[var(--bg-main)] hover:scale-105 transition-all">
+                <i class="fas fa-envelope text-xl"></i>
+                <span class="lang-es">Ir al Formulario</span><span class="lang-en">Go to Contact Form</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Manifesto / Summary Services -->
+    <section class="max-w-6xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-2 gap-16 items-center reveal">
+        <div>
+            <h2 class="text-4xl font-display font-bold mb-6">
+                <span class="lang-es">No grabamos videos. Creamos películas.</span>
+                <span class="lang-en">We don't shoot videos. We craft films.</span>
+            </h2>
+            <p class="text-textmain/90 font-semibold text-sm md:text-base leading-relaxed max-w-md drop-shadow-md">
+                <span class="lang-es">Entendemos que cada proyecto tiene un alma. Nuestra misión es extraer esa esencia utilizando equipos de cine, técnicas de iluminación de vanguardia y un proceso de colorización obsesivo.</span>
+                <span class="lang-en">We understand every project has a soul. Our mission is to extract that essence using cinema gear, cutting-edge lighting, and an obsessive grading process.</span>
+            </p>
+            </br>
+            </br>
+            <a href="servicios.html" class="inline-flex items-center space-x-2 font-semibold border-b border-[var(--text-main)] pb-1 hover:opacity-70 transition interactive-el">
+                <span class="lang-es">Ver nuestros servicios</span><span class="lang-en">View our services</span>
+                <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </div>
+        <div class="glass-panel p-8 grid grid-cols-2 gap-4">
+            <div class="p-6 bg-[var(--glass-border)] rounded-[24px] interactive-el hover:scale-105 transition-transform cursor-pointer">
+                <i class="fas fa-church text-2xl mb-4 text-[var(--text-main)]"></i>
+                <h4 class="font-bold mb-1">Bodas</h4>
+                <p class="text-sm text-[var(--text-sec)]">Premium Docs</p>
+            </div>
+            <div class="p-6 bg-[var(--glass-border)] rounded-[24px] interactive-el hover:scale-105 transition-transform cursor-pointer">
+                <i class="fas fa-building text-2xl mb-4 text-[var(--text-main)]"></i>
+                <h4 class="font-bold mb-1">Corporativo</h4>
+                <p class="text-sm text-[var(--text-sec)]">Brand Films</p>
+            </div>
+            <div class="p-6 bg-[var(--glass-border)] rounded-[24px] interactive-el hover:scale-105 transition-transform cursor-pointer">
+                <i class="fa-solid fa-camera text-2xl mb-4 text-[var(--text-main)]"></i>
+                <h4 class="font-bold mb-1">Fotografía</h4>
+                <p class="text-sm text-[var(--text-sec)]">Editorial</p>
+            </div>
+            <div class="p-6 bg-[var(--glass-border)] rounded-[24px] interactive-el hover:scale-105 transition-transform cursor-pointer">
+                <i class="fa-solid fa-satellite-dish text-2xl mb-4 text-[var(--text-main)]"></i>
+                <h4 class="font-bold mb-1">Dron</h4>
+                <p class="text-sm text-[var(--text-sec)]">Aéreo 4K</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- El Proceso -->
+    <section class="max-w-6xl mx-auto px-4 py-20 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-display font-bold mb-4">
+                <span class="lang-es">Nuestro Proceso.</span>
+                <span class="lang-en">Our Process.</span>
+            </h2>
+            <p class="text-[var(--text-sec)]">
+                <span class="lang-es">Del concepto a la pantalla grande.</span>
+                <span class="lang-en">From concept to the big screen.</span>
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-panel p-8 text-center interactive-el hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">1</div>
+                <h3 class="text-xl font-bold mb-4">
+                    <span class="lang-es">Pre-producción</span><span class="lang-en">Pre-production</span>
+                </h3>
+                <p class="text-[var(--text-sec)] text-sm leading-relaxed">
+                    <span class="lang-es">Planificación meticulosa, guionización, moodboards y scouting de locaciones para garantizar que cada toma cuente una historia.</span>
+                    <span class="lang-en">Meticulous planning, scripting, moodboards, and location scouting to ensure every shot tells a story.</span>
+                </p>
+            </div>
+            <div class="glass-panel p-8 text-center interactive-el hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">2</div>
+                <h3 class="text-xl font-bold mb-4">
+                    <span class="lang-es">Producción</span><span class="lang-en">Production</span>
+                </h3>
+                <p class="text-[var(--text-sec)] text-sm leading-relaxed">
+                    <span class="lang-es">Ejecución en el set con equipos Sony Cinema Line, iluminación avanzada y dirección de arte para capturar la máxima calidad visual.</span>
+                    <span class="lang-en">On-set execution with Sony Cinema Line gear, advanced lighting, and art direction to capture the highest visual quality.</span>
+                </p>
+            </div>
+            <div class="glass-panel p-8 text-center interactive-el hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">3</div>
+                <h3 class="text-xl font-bold mb-4">
+                    <span class="lang-es">Post-producción</span><span class="lang-en">Post-production</span>
+                </h3>
+                <p class="text-[var(--text-sec)] text-sm leading-relaxed">
+                    <span class="lang-es">Montaje rítmico, diseño sonoro inmersivo y un riguroso Color Grading en DaVinci Resolve para darle ese look de película.</span>
+                    <span class="lang-en">Rhythmic editing, immersive sound design, and rigorous Color Grading in DaVinci Resolve to give it that film look.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Grading Interactive Slider -->
+    <section class="max-w-5xl mx-auto px-4 py-20 reveal">
+        <div class="text-center mb-10">
+            <h2 class="text-4xl font-display font-bold mb-4">Color Grading.</h2>
+            <p class="text-[var(--text-sec)]">RAW (Log) vs Cinematic Look.</p>
+        </div>
+        
+        <div class="slider-container glass-panel interactive-el">
+            <img src="imagenes/ColorGrading.jpeg" alt="RAW Image" class="img-layer filter grayscale opacity-80" />
+            <img src="imagenes/ColorGrading.jpeg" alt="Color Graded" class="img-layer img-after" id="imgAfter" />
+            <div class="slider-button" id="sliderBtn"><i class="fas fa-arrows-alt-h text-sm"></i></div>
+            <input type="range" min="0" max="100" value="50" class="slider-input" id="colorSlider">
+        </div>
+    </section>
+
+    <!-- Portafolio Preview RESTAURADO (Bento Grid Expandido + Grayscale Hover) -->
+    <section class="max-w-6xl mx-auto px-4 py-20 reveal">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-4xl font-display font-bold mb-2">
+                    <span class="lang-es">Trabajos Recientes.</span>
+                    <span class="lang-en">Recent Works.</span>
+                </h2>
+                <p class="text-[var(--text-sec)]">
+                    <span class="lang-es">Un vistazo a nuestra galería.</span>
+                    <span class="lang-en">A glimpse into our gallery.</span>
+                </p>
+            </div>
+            <a href="portafolio.html" class="hidden md:inline-flex items-center space-x-2 font-semibold border-b border-[var(--text-main)] pb-1 hover:opacity-70 transition interactive-el">
+                <span class="lang-es">Ver todo el portafolio</span><span class="lang-en">View full portfolio</span>
+                <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <a href="portafolio.html" class="glass-panel h-80 group overflow-hidden relative cursor-pointer interactive-el block md:col-span-2">
+                <img src="imagenes/foto10.jpg" class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Boda">
+                <div class="absolute bottom-6 left-6 bg-[var(--glass-bg)] backdrop-blur-md px-6 py-2 rounded-full border border-[var(--glass-border)] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span class="font-bold text-sm text-[var(--text-main)]">Cinematic Wedding</span>
+                </div>
+            </a>
+            <a href="portafolio.html" class="glass-panel h-80 group overflow-hidden relative cursor-pointer interactive-el block md:col-span-2">
+                <img src="imagenes/foto11.jpg" class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Corporativo">
+                <div class="absolute bottom-6 left-6 bg-[var(--glass-bg)] backdrop-blur-md px-6 py-2 rounded-full border border-[var(--glass-border)] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span class="font-bold text-sm text-[var(--text-main)]">Brand Documentary</span>
+                </div>
+            </a>
+            <a href="portafolio.html" class="glass-panel h-64 group overflow-hidden relative cursor-pointer interactive-el block md:col-span-1">
+                <img src="imagenes/foto12.jpg" class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Retrato">
+                <div class="absolute bottom-4 left-4 bg-[var(--glass-bg)] backdrop-blur-md px-4 py-1.5 rounded-full border border-[var(--glass-border)] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span class="font-bold text-xs text-[var(--text-main)]">Editorial</span>
+                </div>
+            </a>
+            <a href="portafolio.html" class="glass-panel h-64 group overflow-hidden relative cursor-pointer interactive-el block md:col-span-3">
+                <img src="imagenes/foto13.jpg" class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Documental">
+                <div class="absolute bottom-6 left-6 bg-[var(--glass-bg)] backdrop-blur-md px-6 py-2 rounded-full border border-[var(--glass-border)] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span class="font-bold text-sm text-[var(--text-main)]">Short Film</span>
+                </div>
+            </a>
+        </div>
+        
+        <a href="portafolio.html" class="md:hidden mt-8 w-full block text-center btn-apple bg-[var(--glass-border)] py-4 font-semibold text-[var(--text-main)]">
+            <span class="lang-es">Ver todo el portafolio</span><span class="lang-en">View full portfolio</span>
+        </a>
+    </section>
+
+    <!-- CLIENTES / MARCAS (APPLE STYLE) -->
+<section class="py-24 border-b border-[var(--glass-border)] overflow-hidden bg-transparent">
+    <div class="max-w-6xl mx-auto px-6 mb-16 text-center reveal">
+        <h2 class="font-display text-3xl md:text-4xl text-textmain font-bold uppercase mb-4 tracking-tight">
+            <span class="lang-es">Confían en <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">nuestra mirada</span></span>
+            <span class="lang-en">They trust <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">our vision</span></span>
+        </h2>
+        <p class="text-textmain font-medium text-sm md:text-base max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
+            <span class="lang-es text-textmain/90 font-semibold">Las marcas que han elegido a Campo's Visión para transformar momentos en imágenes con identidad, intención y carácter.</span>
+            <span class="lang-en text-textmain/90 font-semibold">The brands that have chosen Campo's Visión to transform moments into images with identity, intention, and character.</span>
+        </p>
+    </div>
+
+    <!-- Carrusel Infinito Mejorado -->
+<div class="relative w-full max-w-7xl mx-auto mask-edges reveal delay-100">
+    <div class="flex overflow-hidden group">
+        <div class="logo-track flex items-center justify-between gap-16 md:gap-24 px-6">
+            <!-- Set 1 (Sin filtros, más grandes) -->
+            <img src="imagenes/Nescafe Dolca.png" alt="Nescafé" class="h-16 md:h-24 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/icarrd+20.png" alt="ICARRD+20" class="h-12 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/JRr.png" alt="JRR" class="h-20 md:h-28 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/Cruz verde.png" alt="Cruz Verde" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/electrolit.png" alt="Electrolit" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/cocacola.png" alt="Coca-Cola" class="h-12 md:h-16 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/monster.png" alt="Monster Energy" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+
+            <!-- Set 2 (Duplicado) -->
+            <img src="imagenes/Nescafe Dolca.png" alt="Nescafé" class="h-16 md:h-24 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/icarrd+20.png" alt="ICARRD+20" class="h-12 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/JRr.png" alt="JRR" class="h-20 md:h-28 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/Cruz verde.png" alt="Cruz Verde" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/electrolit.png" alt="Electrolit" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/cocacola.png" alt="Coca-Cola" class="h-12 md:h-16 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+            <img src="imagenes/monster.png" alt="Monster Energy" class="h-14 md:h-20 object-contain hover:scale-110 transition-transform duration-300 interactive-el">
+        </div>
+    </div>
+</div>
+</section>
+
+    <!-- Footer Profesional - Apple Style -->
+    <footer class="max-w-6xl mx-auto px-4 py-20 mt-10">
+    <div class="glass-panel p-12 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[var(--glass-border)]">
+        
+        <!-- Columna 1: Identidad -->
+        <div class="flex flex-col gap-4">
+            <a href="index.html" class="font-display font-bold text-2xl tracking-tight interactive-el">Campo's Vision.</a>
+            <p class="text-sm text-[var(--text-sec)] leading-relaxed">
+                <span class="lang-es">Transformando momentos en historias cinematográficas desde 2018. Calidad, pasión y detalle en cada frame.</span>
+                <span class="lang-en">Transforming moments into cinematic stories since 2018. Quality, passion, and detail in every frame.</span>
+            </p>
+            <div class="flex gap-4 mt-2">
+                <a href="https://www.instagram.com/camposvision_/" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/573001234567" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+        <!-- Columna 2: Navegación -->
+        <div>
+            <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">Navegación</h4>
+            <ul class="space-y-4 text-sm">
+                <li><a href="nosotros.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a></li>
+                <li><a href="servicios.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a></li>
+                <li><a href="portafolio.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a></li>
+                <li><a href="contacto.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
+            </ul>
+        </div>
+
+        <!-- Columna 3: Contacto / Newsletter -->
+        <div>
+            <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">
+                <span class="lang-es">Contacto Directo</span><span class="lang-en">Get in Touch</span>
+            </h4>
+            <a href="mailto:info@camposvision.com" class="block text-sm font-semibold mb-2 hover:text-[var(--accent)] interactive-el">info@camposvision.com</a>
+            <p class="text-xs text-[var(--text-sec)] mt-4">
+                <span class="lang-es">Cartagena, Colombia. <br> Disponible para proyectos mundiales.</span>
+                <span class="lang-en">Cartagena, Colombia. <br> Available for global projects.</span>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Línea inferior de copyright -->
+    <div class="text-center mt-12 text-[10px] text-[var(--text-sec)] uppercase tracking-widest">
+        &copy; 2026 Campo's Visión. Crafted with precision.
+    </div>
+</footer>
+
+    <!-- Contenedor Flotante de Acciones -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center">
+        <!-- Botón Visión AI (Chatbot) -->
+        <button id="chatToggle" class="w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full flex items-center justify-center text-xl shadow-2xl interactive-el hover:scale-110 transition-transform">
+            <i class="fas fa-robot"></i>
+        </button>
+        
+        <!-- Botón WhatsApp -->
+        <a href="https://wa.me/573000000000" target="_blank" class="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-2xl shadow-2xl interactive-el hover:scale-110 transition-transform">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Chat Modal (Apple Glass) - Altura Ajustada -->
+    <div id="chatModal" class="chat-modal glass-panel flex flex-col h-[400px]">
+        <div class="p-4 border-b border-[var(--glass-border)] flex justify-between items-center bg-[var(--glass-bg)]">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex justify-center items-center text-xs"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h4 class="font-bold text-sm">Visión AI</h4>
+                    <p class="text-[10px] text-green-500">Online</p>
+                </div>
+            </div>
+            <button id="closeChat" class="text-[var(--text-sec)] hover:text-[var(--text-main)] interactive-el"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex-1 p-4 overflow-y-auto flex flex-col" id="chatBody">
+            <div class="chat-msg msg-ai mt-auto">
+                <span class="lang-es">¡Hola! Soy el asistente virtual de Campo's Vision. ¿Buscas cotizar una boda o un video corporativo?</span>
+                <span class="lang-en">Hi! I'm Campo's Vision virtual assistant. Looking for a wedding or corporate video quote?</span>
+            </div>
+        </div>
+        <div class="p-3 border-t border-[var(--glass-border)]">
+            <a href="contacto.html" class="w-full block text-center py-2 bg-[var(--glass-border)] rounded-full text-sm font-semibold hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el">
+                <span class="lang-es">Ir a Contacto / WhatsApp</span><span class="lang-en">Go to Contact / WhatsApp</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- SCRIPTS LÓGICOS -->
+    <script>
+        // 1. Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.classList.add('fade-out');
+                setTimeout(() => preloader.style.display = 'none', 800);
+            }, 1000);
+        });
+
+        // 2. Custom Cursor Apple Style
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        const interactives = document.querySelectorAll('.interactive-el, a, button, input');
+
+        if(window.matchMedia("(pointer: fine)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+                dot.style.transform = `translate(${posX}px, ${posY}px)`;
+                outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 150, fill: "forwards" });
+            });
+
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+            });
+        }
+
+        // 3. Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // 4. Multi-language Toggle
+        const langToggle = document.getElementById('langToggle');
+        let currentLang = 'es';
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            document.documentElement.setAttribute('lang', currentLang);
+        });
+
+        // 5. Scroll Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 6. Color Grading Slider Logic
+        const slider = document.getElementById('colorSlider');
+        const imgAfter = document.getElementById('imgAfter');
+        const sliderBtn = document.getElementById('sliderBtn');
+
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            imgAfter.style.width = `${val}%`;
+            sliderBtn.style.left = `${val}%`;
+        });
+
+        // 7. Chatbot Modal Logic
+        const chatToggle = document.getElementById('chatToggle');
+        const chatModal = document.getElementById('chatModal');
+        const closeChat = document.getElementById('closeChat');
+
+        chatToggle.addEventListener('click', () => chatModal.classList.add('active'));
+        closeChat.addEventListener('click', () => chatModal.classList.remove('active'));
+    </script>
+</body>
+</html>

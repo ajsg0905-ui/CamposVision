@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Campo's Visión — Reserva tu Fecha</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: { 
+                    main:'var(--bg-main)', sec:'var(--bg-sec)', accent:'var(--accent)', 
+                    textmain:'var(--text-main)', textsec:'var(--text-sec)', bordercolor:'var(--border-color)' 
+                },
+                fontFamily: { 
+                    sans:['Inter','sans-serif'], 
+                    display:['Montserrat','sans-serif'], 
+                    serif:['Cormorant Garamond','serif'] 
+                }
+            }}
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;600&family=Montserrat:wght@200;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* === APPLE DESIGN SYSTEM VARIABLES === */
+        :root {
+            --apple-radius: 32px;
+            --pill-radius: 9999px;
+            --bg-main: #f5f5f7;
+            --bg-sec: #ffffff;
+            --text-main: #1d1d1f;
+            --text-sec: #86868b;
+            --accent: #000000;
+            --accent-inv: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --border-color: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --line: rgba(0, 0, 0, 0.08);
+        }
+
+        html.dark {
+            --bg-main: #000000;
+            --bg-sec: #0f0f0f;
+            --text-main: #f5f5f7;
+            --text-sec: #86868b;
+            --accent: #ffffff;
+            --accent-inv: #000000;
+            --glass-bg: rgba(29, 29, 31, 0.65);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --line: rgba(255, 255, 255, 0.06);
+        }
+        
+        body { background-color:var(--bg-main); color:var(--text-sec); transition:background-color 0.5s ease,color 0.5s ease; }
+        html[lang="es"] .lang-en{display:none!important} html[lang="en"] .lang-es{display:none!important}
+        
+        /* APPLE GLASSMORPHISM */
+        .glass-nav { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--pill-radius); box-shadow:0 4px 24px rgba(0,0,0,0.04); }
+        .glass-panel { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--apple-radius); box-shadow:0 8px 32px rgba(0,0,0,0.04); overflow:hidden; }
+        .btn-apple { border-radius:var(--pill-radius); transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),background-color 0.3s; }
+        .btn-apple:hover { transform:scale(1.02); }
+
+        .reveal { opacity:0; transform:translateY(40px); transition:all 1s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+        .delay-100 { transition-delay:100ms; }
+        .delay-200 { transition-delay:200ms; }
+        .delay-300 { transition-delay:300ms; }
+        
+        .film-grain { position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9998; opacity:0.03; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        
+        @media (pointer:fine) {
+            body,a,button,input,textarea,select{cursor:none}
+            .custom-cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;}
+            .custom-cursor-outline{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,background-color 0.2s;}
+            body.hovering .custom-cursor-dot{width:0;height:0}
+            body.hovering .custom-cursor-outline{width:60px;height:60px;background-color:rgba(128,128,128,0.2);backdrop-filter:blur(4px);border-color:transparent;}
+        }
+
+        /* Form fields */
+        .form-field { position:relative; }
+        .form-field input, .form-field textarea, .form-field select { width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-color); padding:0.75rem 0; color:var(--text-main); font-size:0.875rem; outline:none; transition:border-color 0.3s; font-family:'Inter',sans-serif; }
+        .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-bottom-color:var(--text-main); }
+        .form-field label { position:absolute; left:0; top:0.75rem; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; font-weight:700; color:var(--text-sec); transition:all 0.3s; pointer-events:none; font-family:'Montserrat',sans-serif; }
+        .form-field input:focus~label, .form-field input:not(:placeholder-shown)~label, .form-field textarea:focus~label, .form-field textarea:not(:placeholder-shown)~label { top:-1rem; font-size:0.55rem; color:var(--text-main); }
+        .form-field select { appearance:none; -webkit-appearance:none; }
+        
+        /* Event pills - APPLE STYLE */
+        .event-pill { padding:0.5rem 1.25rem; border:1px solid var(--border-color); border-radius:var(--pill-radius); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; font-family:'Montserrat',sans-serif; color:var(--text-sec); transition:all 0.25s ease; cursor:pointer; background:transparent; }
+        .event-pill:hover { border-color:var(--text-main); color:var(--text-main); }
+        .event-pill.active { background:var(--accent); color:var(--accent-inv); border-color:var(--accent); }
+        
+        /* Map grid */
+        .map-bg { background:repeating-linear-gradient(0deg,var(--border-color) 0,var(--border-color) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(90deg,var(--border-color) 0,var(--border-color) 1px,transparent 1px,transparent 60px); }
+        .map-pulse { animation:mapPulse 2.5s infinite; }
+        @keyframes mapPulse { 0%,100%{box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 20%,transparent),0 0 0 12px color-mix(in srgb,var(--accent) 10%,transparent)} 50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--accent) 10%,transparent),0 0 0 20px color-mix(in srgb,var(--accent) 5%,transparent)} }
+        
+        /* Chat Modal - APPLE STYLE */
+        .chat-modal { position:fixed; bottom:160px; right:24px; width:340px; transform:translateY(20px) scale(0.95); opacity:0; pointer-events:none; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); z-index:9998; border-radius: 24px; overflow: hidden; }
+        .chat-modal.active { transform:translateY(0) scale(1); opacity:1; pointer-events:auto; }
+        .chat-msg-user { background:var(--accent); color:var(--accent-inv); padding:10px 14px; border-radius:20px; max-width:82%; align-self:flex-end; font-size:0.85rem; font-weight:500; line-height:1.4; }
+        .chat-msg-ai { background:var(--glass-border); color:var(--text-main); padding:10px 14px; border-radius:20px; max-width:82%; align-self:flex-start; font-size:0.85rem; line-height:1.4; }
+        .chat-typing { display:flex; gap:4px; align-items:center; padding:10px 14px; }
+        .chat-typing span { width:6px; height:6px; background:var(--text-sec); border-radius:50%; animation:typingDot 1.2s infinite; }
+        .chat-typing span:nth-child(2) { animation-delay:0.2s; }
+        .chat-typing span:nth-child(3) { animation-delay:0.4s; }
+        
+        #mobile-menu { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
+        #mobile-menu.open { max-height:400px; }
+        
+        #form-success { transition:opacity 0.5s ease; border-radius: var(--apple-radius); }
+    </style>
+</head>
+<body class="bg-main text-textsec font-sans antialiased overflow-x-hidden selection:bg-accent selection:text-accent-inv">
+    
+    <div class="film-grain"></div>
+    <div class="custom-cursor-dot hidden md:block"></div>
+    <div class="custom-cursor-outline hidden md:block"></div>
+
+    <!-- VIDEO BG -->
+    <div class="fixed inset-0 w-full h-full z-0 pointer-events-none">
+        <video src="https://assets.mixkit.co/videos/preview/mixkit-set-of-lights-in-a-video-studio-34465-large.mp4" class="absolute inset-0 w-full h-full object-cover opacity-40" autoplay muted loop playsinline></video>
+        <div class="absolute inset-0 bg-[var(--bg-main)]/90 backdrop-blur-md transition-colors duration-700"></div>
+    </div>
+
+    <!-- NAVBAR DYNAMIC ISLAND STYLE -->
+    <nav class="fixed w-full z-50 top-6 px-4 md:px-8 transition-all duration-500" id="navbar">
+        <div class="glass-nav max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="font-display text-xl font-bold text-textmain tracking-widest uppercase interactive-el">
+                Campo's<span class="font-serif italic font-light opacity-50">.</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-textmain">
+                <a href="index.html"      class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                <a href="nosotros.html"   class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                <a href="Servicios.html"  class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                <a href="portafolio.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                <a href="contacto.html"   class="text-[var(--text-main)] font-semibold interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleLanguage()" id="langToggle" class="text-sm font-semibold w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <span class="lang-es">EN</span><span class="lang-en">ES</span>
+                </button>
+                <button onclick="toggleTheme()" id="theme-icon" class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <i class="fa-solid fa-sun dark:hidden"></i>
+                    <i class="fa-solid fa-moon hidden dark:block"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-textmain text-xl interactive-el ml-2" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full mt-4 glass-panel px-6">
+                <div class="py-6 flex flex-col space-y-4 text-sm font-semibold text-textmain">
+                    <a href="index.html">      <span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                    <a href="nosotros.html">   <span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                    <a href="Servicios.html">  <span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                    <a href="portafolio.html"> <span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                    <a href="contacto.html" class="text-[var(--text-main)]">   <span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative z-10">
+
+        <!-- HERO -->
+        <header class="relative pt-40 pb-20 border-b border-[var(--glass-border)] px-6 overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.2]"><h2 class="font-display font-black text-[10rem] md:text-[18rem] text-textmain uppercase tracking-tighter leading-none">TALK</h2></div>
+            <div class="max-w-6xl mx-auto relative z-10 mt-10">
+                <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4 font-display"><span class="lang-es">Hablemos</span><span class="lang-en">Let's Talk</span></p>
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <h1 class="font-display text-5xl md:text-7xl text-textmain font-extrabold uppercase tracking-tight leading-none">
+                        <span class="lang-es">Contacto<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)] text-4xl md:text-6xl">reserva tu fecha</span></span>
+                        <span class="lang-en">Contact<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)] text-4xl md:text-6xl">book your date</span></span>
+                    </h1>
+                    <p class="text-[var(--text-sec)] text-sm md:text-base max-w-sm leading-relaxed font-serif">
+                        <span class="lang-es">Cuéntanos sobre tu proyecto y recibe una propuesta personalizada en menos de 24 horas.</span>
+                        <span class="lang-en">Tell us about your project and receive a personalized proposal in less than 24 hours.</span>
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTACT CARDS APPLE STYLE -->
+        <section class="py-16 border-b border-[var(--glass-border)] px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="glass-panel overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-px bg-[var(--border-color)]">
+                        <a href="https://wa.me/573003646036" target="_blank" class="interactive-el bg-[var(--bg-sec)] p-8 group hover:bg-[var(--accent)] transition-colors duration-500 reveal">
+                            <div class="w-12 h-12 rounded-full bg-[var(--glass-border)] group-hover:bg-white/20 flex items-center justify-center text-xl text-[var(--text-main)] group-hover:text-[var(--accent-inv)] transition-colors mb-6"><i class="fa-brands fa-whatsapp"></i></div>
+                            <p class="text-[0.6rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-70 uppercase tracking-widest font-bold mb-1 transition-colors">WhatsApp</p>
+                            <p class="text-[var(--text-main)] group-hover:text-[var(--accent-inv)] font-bold text-sm transition-colors">+57 300 364 6036</p>
+                            <p class="text-[0.65rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-50 uppercase tracking-widest font-bold flex items-center gap-2 mt-4 transition-colors"><span class="lang-es">Escribir ahora</span><span class="lang-en">Write now</span><i class="fa-solid fa-arrow-right text-xs"></i></p>
+                        </a>
+                        <a href="mailto:contacto@camposvision.com" class="interactive-el bg-[var(--bg-sec)] p-8 group hover:bg-[var(--accent)] transition-colors duration-500 reveal delay-100">
+                            <div class="w-12 h-12 rounded-full bg-[var(--glass-border)] group-hover:bg-white/20 flex items-center justify-center text-xl text-[var(--text-main)] group-hover:text-[var(--accent-inv)] transition-colors mb-6"><i class="fa-solid fa-envelope"></i></div>
+                            <p class="text-[0.6rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-70 uppercase tracking-widest font-bold mb-1 transition-colors">Email</p>
+                            <p class="text-[var(--text-main)] group-hover:text-[var(--accent-inv)] font-bold text-sm transition-colors break-all">contacto@camposvision.com</p>
+                            <p class="text-[0.65rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-50 uppercase tracking-widest font-bold flex items-center gap-2 mt-4 transition-colors"><span class="lang-es">Enviar correo</span><span class="lang-en">Send email</span><i class="fa-solid fa-arrow-right text-xs"></i></p>
+                        </a>
+                        <a href="https://www.instagram.com/camposvision_/" target="_blank" class="interactive-el bg-[var(--bg-sec)] p-8 group hover:bg-[var(--accent)] transition-colors duration-500 reveal delay-200">
+                            <div class="w-12 h-12 rounded-full bg-[var(--glass-border)] group-hover:bg-white/20 flex items-center justify-center text-xl text-[var(--text-main)] group-hover:text-[var(--accent-inv)] transition-colors mb-6"><i class="fa-brands fa-instagram"></i></div>
+                            <p class="text-[0.6rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-70 uppercase tracking-widest font-bold mb-1 transition-colors">Instagram</p>
+                            <p class="text-[var(--text-main)] group-hover:text-[var(--accent-inv)] font-bold text-sm transition-colors">@camposvision_</p>
+                            <p class="text-[0.65rem] text-[var(--text-sec)] group-hover:text-[var(--accent-inv)] opacity-50 uppercase tracking-widest font-bold flex items-center gap-2 mt-4 transition-colors"><span class="lang-es">Ver perfil</span><span class="lang-en">View profile</span><i class="fa-solid fa-arrow-right text-xs"></i></p>
+                        </a>
+                        <div class="bg-[var(--bg-sec)] p-8 group reveal delay-300">
+                            <div class="w-12 h-12 rounded-full bg-[var(--glass-border)] flex items-center justify-center text-xl text-[var(--text-main)] mb-6"><i class="fa-solid fa-location-dot"></i></div>
+                            <p class="text-[0.6rem] text-[var(--text-sec)] uppercase tracking-widest font-bold mb-1"><span class="lang-es">Sede Principal</span><span class="lang-en">Main Office</span></p>
+                            <p class="text-[var(--text-main)] font-bold text-sm">Cartagena de Indias</p>
+                            <p class="text-[var(--text-sec)] text-xs mt-1">Colombia</p>
+                            <p class="text-[var(--text-sec)] opacity-50 text-[0.65rem] uppercase tracking-widest font-bold mt-4"><span class="lang-es">También viajamos ✈️</span><span class="lang-en">We also travel ✈️</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM + ASIDE -->
+        <section class="py-20 px-6 border-b border-[var(--glass-border)]">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+                <!-- FORM APPLE STYLE -->
+                <div class="lg:col-span-8 reveal">
+                    <h2 class="font-display text-3xl md:text-4xl text-textmain font-bold uppercase mb-10 tracking-tight">
+                        <span class="lang-es">Detalles de tu <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">proyecto</span></span>
+                        <span class="lang-en">Your project <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">details</span></span>
+                    </h2>
+
+                    <div class="glass-panel p-8 md:p-12 relative">
+                        <!-- Success overlay -->
+                        <div id="form-success" class="absolute inset-0 bg-[var(--glass-bg)] backdrop-blur-2xl z-20 hidden opacity-0 flex flex-col items-center justify-center text-center p-8">
+                            <i class="fa-solid fa-circle-check text-6xl text-[#25D366] mb-6"></i>
+                            <h3 class="font-display text-3xl text-textmain font-bold mb-4 uppercase"><span class="lang-es">¡Redirigiendo a WhatsApp!</span><span class="lang-en">Redirecting to WhatsApp!</span></h3>
+                            <p class="text-[var(--text-sec)] max-w-md mx-auto leading-relaxed mb-6 text-sm">
+                                <span class="lang-es">Tus datos se envían directamente a Brian o Miguel para una atención inmediata y personalizada.</span>
+                                <span class="lang-en">Your details are sent directly to Brian or Miguel for immediate and personalized attention.</span>
+                            </p>
+                            <button onclick="resetForm()" class="interactive-el btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-6 py-2 text-xs font-bold uppercase tracking-widest"><span class="lang-es">Volver al formulario</span><span class="lang-en">Back to form</span></button>
+                        </div>
+
+                        <div class="space-y-10">
+                            <!-- Name + Company -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="form-field">
+                                    <input type="text" id="f-name" placeholder=" " class="interactive-el" required>
+                                    <label for="f-name"><span class="lang-es">Tu Nombre *</span><span class="lang-en">Your Name *</span></label>
+                                </div>
+                                <div class="form-field">
+                                    <input type="text" id="f-company" placeholder=" " class="interactive-el">
+                                    <label for="f-company"><span class="lang-es">Empresa (Opcional)</span><span class="lang-en">Company (Optional)</span></label>
+                                </div>
+                            </div>
+                            <!-- Email + Phone -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="form-field">
+                                    <input type="email" id="f-email" placeholder=" " class="interactive-el" required>
+                                    <label for="f-email">Email *</label>
+                                </div>
+                                <div class="form-field">
+                                    <input type="tel" id="f-phone" placeholder=" " class="interactive-el" required>
+                                    <label for="f-phone">WhatsApp / <span class="lang-es">Teléfono</span><span class="lang-en">Phone</span> *</label>
+                                </div>
+                            </div>
+                            <!-- Event type pills -->
+                            <div class="pt-2">
+                                <p class="text-[0.65rem] uppercase tracking-widest font-bold text-[var(--text-sec)] mb-4 font-display"><span class="lang-es">Tipo de Evento</span><span class="lang-en">Event Type</span></p>
+                                <div class="flex flex-wrap gap-2" id="event-pills">
+                                    <button type="button" class="event-pill interactive-el" data-val="Boda">💍 <span class="lang-es">Boda</span><span class="lang-en">Wedding</span></button>
+                                    <button type="button" class="event-pill interactive-el" data-val="Corporativo">🏢 <span class="lang-es">Corporativo</span><span class="lang-en">Corporate</span></button>
+                                    <button type="button" class="event-pill interactive-el" data-val="Videoclip">🎵 Videoclip</button>
+                                    <button type="button" class="event-pill interactive-el" data-val="Documental">🎬 <span class="lang-es">Documental</span><span class="lang-en">Documentary</span></button>
+                                    <button type="button" class="event-pill interactive-el" data-val="Comercial">🌟 <span class="lang-es">Comercial</span><span class="lang-en">Commercial</span></button>
+                                    <button type="button" class="event-pill interactive-el" data-val="Otro">✦ <span class="lang-es">Otro</span><span class="lang-en">Other</span></button>
+                                </div>
+                            </div>
+                            <!-- Service -->
+                            <div class="form-field relative">
+                                <select id="f-service" class="interactive-el pt-6 bg-transparent" required>
+                                    <option value="" disabled selected class="bg-[var(--bg-main)]"><span class="lang-es">¿Qué servicio principal buscas? *</span></option>
+                                    <option value="Vídeo Profesional" class="bg-[var(--bg-main)]">📹 <span class="lang-es">Vídeo Profesional</span><span class="lang-en">Professional Video</span></option>
+                                    <option value="Fotografía" class="bg-[var(--bg-main)]">📸 <span class="lang-es">Fotografía</span><span class="lang-en">Photography</span></option>
+                                    <option value="Dron Aéreo" class="bg-[var(--bg-main)]">🚁 <span class="lang-es">Dron Aéreo</span><span class="lang-en">Aerial Drone</span></option>
+                                    <option value="Paquete Completo" class="bg-[var(--bg-main)]">🎬 <span class="lang-es">Paquete Completo</span><span class="lang-en">Full Package</span></option>
+                                </select>
+                                <p class="absolute top-0 left-0 text-[0.65rem] uppercase tracking-widest font-bold text-[var(--text-sec)] font-display"><span class="lang-es">Servicio Principal</span><span class="lang-en">Main Service</span></p>
+                                <i class="fa-solid fa-chevron-down absolute right-0 bottom-3 text-[var(--text-sec)] text-xs pointer-events-none"></i>
+                            </div>
+                            <!-- Date + Location -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="form-field">
+                                    <input type="date" id="f-date" placeholder=" " class="interactive-el">
+                                    <label for="f-date"><span class="lang-es">Fecha del Evento</span><span class="lang-en">Event Date</span></label>
+                                </div>
+                                <div class="form-field">
+                                    <input type="text" id="f-location" placeholder=" " class="interactive-el">
+                                    <label for="f-location"><span class="lang-es">Lugar / Ciudad</span><span class="lang-en">Location / City</span></label>
+                                </div>
+                            </div>
+                            <!-- Message -->
+                            <div class="form-field">
+                                <textarea id="f-message" rows="4" placeholder=" " class="interactive-el resize-none" required></textarea>
+                                <label for="f-message"><span class="lang-es">Cuéntanos más sobre tu proyecto *</span><span class="lang-en">Tell us more about your project *</span></label>
+                            </div>
+                            <!-- Submit -->
+                            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                                <button onclick="handleSubmit()" class="btn-apple interactive-el flex-1 px-8 py-4 bg-[var(--accent)] text-[var(--accent-inv)] font-bold text-sm tracking-wide uppercase flex items-center gap-3 justify-center">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span class="lang-es">Enviar por WhatsApp</span><span class="lang-en">Send via WhatsApp</span>
+                                </button>
+                                <a href="https://wa.me/573003646036" target="_blank" class="btn-apple interactive-el px-8 py-4 bg-[var(--glass-border)] text-[var(--text-main)] hover:bg-[var(--border-color)] font-bold text-sm tracking-wide uppercase flex items-center gap-3 justify-center">
+                                    <span class="lang-es">Chat Directo</span><span class="lang-en">Direct Chat</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASIDE -->
+                <div class="lg:col-span-4 space-y-6">
+                    <!-- Process -->
+                    <div class="glass-panel p-8 reveal delay-100">
+                        <h3 class="font-display text-base text-[var(--text-main)] font-bold mb-6 uppercase tracking-widest"><span class="lang-es">Nuestro Proceso</span><span class="lang-en">Our Process</span></h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-[var(--glass-border)] flex items-center justify-center shrink-0 text-[var(--text-main)] font-bold text-xs">1</div>
+                                <div><p class="text-[var(--text-main)] font-bold text-sm mb-1"><span class="lang-es">Consulta</span><span class="lang-en">Consultation</span></p><p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">Escuchamos tu historia, entendemos tu visión.</span><span class="lang-en">We listen to your story, understand your vision.</span></p></div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-[var(--glass-border)] flex items-center justify-center shrink-0 text-[var(--text-main)] font-bold text-xs">2</div>
+                                <div><p class="text-[var(--text-main)] font-bold text-sm mb-1"><span class="lang-es">Propuesta</span><span class="lang-en">Proposal</span></p><p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">Diseñamos una propuesta a la medida en 24h.</span><span class="lang-en">We design a tailored proposal within 24h.</span></p></div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-[var(--glass-border)] flex items-center justify-center shrink-0 text-[var(--text-main)] font-bold text-xs">3</div>
+                                <div><p class="text-[var(--text-main)] font-bold text-sm mb-1"><span class="lang-es">Reserva</span><span class="lang-en">Booking</span></p><p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">Con el 50% de anticipo tu fecha queda asegurada.</span><span class="lang-en">With 50% deposit your date is secured.</span></p></div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-[var(--glass-border)] flex items-center justify-center shrink-0 text-[var(--text-main)] font-bold text-xs">4</div>
+                                <div><p class="text-[var(--text-main)] font-bold text-sm mb-1"><span class="lang-es">La Magia</span><span class="lang-en">The Magic</span></p><p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">Grabamos, colorizamos y entregamos tu obra maestra.</span><span class="lang-en">We film, grade and deliver your masterpiece.</span></p></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- FAQ -->
+                    <div class="glass-panel p-8 reveal delay-200">
+                        <h3 class="font-display text-base text-[var(--text-main)] font-bold mb-6 uppercase tracking-widest">FAQ</h3>
+                        <div class="space-y-5">
+                            <div class="border-b border-[var(--glass-border)] pb-5">
+                                <p class="text-[var(--text-main)] font-bold text-sm mb-2"><span class="lang-es">¿Con cuánta anticipación reservo?</span><span class="lang-en">How far in advance should I book?</span></p>
+                                <p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">3-6 meses para bodas. Para corporativos, 4 semanas de antelación.</span><span class="lang-en">3-6 months for weddings. For corporate, 4 weeks in advance.</span></p>
+                            </div>
+                            <div class="border-b border-[var(--glass-border)] pb-5">
+                                <p class="text-[var(--text-main)] font-bold text-sm mb-2"><span class="lang-es">¿Trabajan fuera de Cartagena?</span><span class="lang-en">Do you work outside Cartagena?</span></p>
+                                <p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">¡Claro! Hacemos bodas de destino y corporativos en todo el país. Viáticos se cotizan aparte.</span><span class="lang-en">Of course! We cover destination weddings and events nationwide. Travel costs quoted separately.</span></p>
+                            </div>
+                            <div>
+                                <p class="text-[var(--text-main)] font-bold text-sm mb-2"><span class="lang-es">¿Cuándo entregan el material?</span><span class="lang-en">When is material delivered?</span></p>
+                                <p class="text-[var(--text-sec)] text-xs leading-relaxed"><span class="lang-es">Fotografías en 2-4 semanas. Videos premium entre 4 y 8 semanas por el color grading.</span><span class="lang-en">Photos in 2-4 weeks. Premium videos in 4-8 weeks due to color grading.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAP SECTION -->
+        <section class="h-80 relative overflow-hidden flex items-center justify-center border-b border-[var(--glass-border)]">
+            <div class="absolute inset-0 map-bg opacity-30"></div>
+            <div class="relative z-10 text-center reveal glass-panel p-8 flex flex-col items-center justify-center w-64 h-64 border border-[var(--glass-border)]">
+                <div class="w-4 h-4 bg-[var(--text-main)] rounded-full map-pulse mb-6"></div>
+                <h3 class="font-display text-2xl text-[var(--text-main)] font-bold uppercase">Cartagena</h3>
+                <p class="text-[0.65rem] uppercase tracking-widest text-[var(--text-sec)] font-bold mb-6">Colombia ✈️</p>
+                <a href="https://www.google.com/maps/place/Cartagena,+Bol%C3%ADvar" target="_blank" class="interactive-el btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-5 py-2 text-[0.7rem] uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span class="lang-es">Abrir Mapa</span><span class="lang-en">Open Map</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER APPLE STYLE -->
+        <footer class="max-w-6xl mx-auto px-4 py-20 mt-10">
+            <div class="glass-panel p-12 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[var(--glass-border)]">
+                <!-- Columna 1: Identidad -->
+                <div class="flex flex-col gap-4">
+                    <a href="index.html" class="font-display font-bold text-2xl tracking-tight interactive-el">Campo's<span class="font-serif italic font-light opacity-50">.</span></a>
+                    <p class="text-sm text-[var(--text-sec)] leading-relaxed">
+                        <span class="lang-es">Productora Premium · Cartagena de Indias</span>
+                        <span class="lang-en">Premium Production · Cartagena de Indias</span>
+                    </p>
+                    <div class="flex gap-4 mt-2">
+                        <a href="https://www.instagram.com/camposvision_/" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-vimeo-v"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Columna 2: Navegación -->
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">Navegación</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="nosotros.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a></li>
+                        <li><a href="servicios.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a></li>
+                        <li><a href="portafolio.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a></li>
+                        <li><a href="contacto.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Contacto -->
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">
+                        <span class="lang-es">Contacto Directo</span><span class="lang-en">Get in Touch</span>
+                    </h4>
+                    <a href="mailto:info@camposvision.com" class="block text-sm font-semibold mb-2 hover:text-[var(--accent)] interactive-el">info@camposvision.com</a>
+                    <p class="text-xs text-[var(--text-sec)] mt-4">
+                        <span class="lang-es">Cartagena, Colombia. <br> Disponible para proyectos mundiales.</span>
+                        <span class="lang-en">Cartagena, Colombia. <br> Available for global projects.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 text-[10px] text-[var(--text-sec)] uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-2">
+                <p>&copy; 2026 Campo's Visión.</p>
+                <p><span class="lang-es">Desarrollado por el Senior Angel</span><span class="lang-en">Developed by Senior Angel</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- CHATBOT FLOATING & WHATSAPP APPLE STYLE -->
+    <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 items-end">
+        
+        <!-- Modal de Chat -->
+        <div id="ai-chat-modal" class="chat-modal glass-panel shadow-2xl overflow-hidden flex flex-col">
+            <div class="bg-[var(--glass-bg)] border-b border-[var(--glass-border)] p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center text-xs"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Visión AI</h4>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            <p class="text-[var(--text-sec)] text-[10px]"><span class="lang-es">Online</span><span class="lang-en">Online</span></p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAIChat()" class="hover:text-[var(--accent)] transition-colors interactive-el p-1 text-[var(--text-sec)]"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-[200px] max-h-[320px]">
+                <div class="chat-msg-ai">
+                    <span class="lang-es">¡Hola! 👋 Soy <strong>Visión AI</strong>. Si tienes dudas antes de llenar el formulario, estoy aquí para ayudarte.</span>
+                    <span class="lang-en">Hi! 👋 I'm <strong>Visión AI</strong>. If you have questions before filling the form, I'm here to help.</span>
+                </div>
+            </div>
+            
+            <div class="px-3 py-2 flex gap-2 flex-wrap border-t border-[var(--glass-border)]">
+                <button onclick="sendQuickMsg('¿Con cuánto tiempo de anticipación debo reservar?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Reserva</button>
+                <button onclick="sendQuickMsg('¿Qué paquete me recomiendan para una boda grande?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Paquetes boda</button>
+                <button onclick="sendQuickMsg('How far in advance should I book for a destination wedding?')" class="lang-en text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Booking</button>
+                <button onclick="sendQuickMsg('What package do you recommend for a large corporate event?')" class="lang-en text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Corporate</button>
+            </div>
+            
+            <div class="p-3 border-t border-[var(--glass-border)] flex gap-2 items-center bg-[var(--glass-bg)]">
+                <input type="text" id="ai-input" placeholder="Escribe un mensaje..." class="interactive-el flex-1 bg-transparent border-none outline-none text-sm text-[var(--text-main)] px-2 placeholder-[var(--text-sec)]">
+                <button onclick="sendAIMessage()" class="interactive-el w-9 h-9 shrink-0 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center hover:opacity-70 transition-opacity">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+        
+        <button onclick="toggleAIChat()" class="chat-fab-pulse relative interactive-el w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition-transform" id="chat-fab">
+            <i class="fa-solid fa-robot" id="chat-fab-icon"></i>
+        </button>
+        <a href="https://wa.me/573003646036" target="_blank" class="interactive-el w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#1ebd5a] hover:scale-110 transition-all flex items-center justify-center text-2xl">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- SCRIPT ORIGINAL INTACTO -->
+    <script>
+    const CAMPOS_SYSTEM_PROMPT=`Eres "Visión AI" de Campo's Visión, productora en Cartagena. Procesos: Consulta → Propuesta 24h → Reserva (50%) → Producción → Entrega. Fotos: 2-4 semanas. Video premium: 4-8 semanas. Para bodas reservar con 3-6 meses. Corporativos: 4 semanas. WA: +57 300 123 4567. Responde en el idioma del usuario, conciso y cálido.`;
+    const chatHistory=[];
+    async function callCamposAI(msg){chatHistory.push({role:'user',content:msg});try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:CAMPOS_SYSTEM_PROMPT,messages:chatHistory})});const d=await r.json();const reply=d.content?.map(b=>b.text||'').join('')||'';if(reply)chatHistory.push({role:'assistant',content:reply});return reply||'¿Puedes repetir?';}catch(e){return'Error. <a href="https://wa.me/573003646036" target="_blank" class="underline">WhatsApp</a>';}}
+    function appendUserBubble(t){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-user';d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    function appendTyping(){const b=document.getElementById('chat-messages'),t=document.createElement('div');t.className='chat-msg-ai chat-typing';t.id='typing-indicator';t.innerHTML='<span></span><span></span><span></span>';b.appendChild(t);b.scrollTop=b.scrollHeight;return t;}
+    function appendAIBubble(h){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-ai';d.innerHTML=h;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    async function sendAIMessage(){const i=document.getElementById('ai-input'),m=i.value.trim();if(!m)return;appendUserBubble(m);i.value='';const t=appendTyping();const r=await callCamposAI(m);t.remove();appendAIBubble(r);}
+    async function sendQuickMsg(text){appendUserBubble(text);const t=appendTyping();const r=await callCamposAI(text);t.remove();appendAIBubble(r);}
+    document.getElementById('ai-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendAIMessage();});
+    function toggleAIChat(){const m=document.getElementById('ai-chat-modal'),i=document.getElementById('chat-fab-icon');m.classList.toggle('active');i.className=m.classList.contains('active')?'fa-solid fa-xmark':'fa-solid fa-robot';}
+    
+    // Event pills
+    let selectedEvent='';
+    document.querySelectorAll('.event-pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.event-pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');selectedEvent=pill.dataset.val;});});
+    
+    // Form submit
+    function handleSubmit(){
+        const name=document.getElementById('f-name').value.trim();
+        const phone=document.getElementById('f-phone').value.trim();
+        const email=document.getElementById('f-email').value.trim();
+        const company=document.getElementById('f-company').value.trim();
+        const service=document.getElementById('f-service').value;
+        const date=document.getElementById('f-date').value;
+        const location=document.getElementById('f-location').value.trim();
+        const msg=document.getElementById('f-message').value.trim();
+        if(!name||!phone||!msg){alert(document.documentElement.lang==='en'?'Please fill in the required fields.':'Por favor completa los campos obligatorios.');return;}
+        const success=document.getElementById('form-success');
+        success.classList.remove('hidden');success.classList.remove('opacity-0');success.style.display='flex';
+        setTimeout(()=>{
+            let wa='Hola Campo\'s Visión 👋\n\n';
+            wa+=`*Nombre:* ${name}\n`;
+            if(company)wa+=`*Empresa:* ${company}\n`;
+            wa+=`*Email:* ${email}\n`;
+            wa+=`*WhatsApp:* ${phone}\n`;
+            if(selectedEvent)wa+=`*Tipo de evento:* ${selectedEvent}\n`;
+            if(service)wa+=`*Servicio:* ${service}\n`;
+            if(date)wa+=`*Fecha:* ${date}\n`;
+            if(location)wa+=`*Lugar:* ${location}\n`;
+            wa+=`\n*Proyecto:* ${msg}`;
+            window.open('https://wa.me/573003646036?text='+encodeURIComponent(wa),'_blank');
+        },1200);
+    }
+    function resetForm(){const s=document.getElementById('form-success');s.classList.add('opacity-0');setTimeout(()=>{s.classList.add('hidden');s.style.display='';},500);}
+    
+    // Shared utils
+    const nav=document.getElementById('navbar');window.addEventListener('scroll',()=>{nav.classList.toggle('py-3',window.scrollY>50);nav.classList.toggle('py-4',window.scrollY<=50);});
+    function toggleMobileMenu(){const m=document.getElementById('mobile-menu'),b=document.getElementById('hamburger-btn');m.classList.toggle('open');b.innerHTML=m.classList.contains('open')?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>';}
+    const ro=new IntersectionObserver((entries,obs)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    function toggleLanguage(){const l=document.documentElement.getAttribute('lang')==='es'?'en':'es';document.documentElement.setAttribute('lang',l);const i=document.getElementById('ai-input');if(i)i.placeholder=l==='en'?'Type a message...':'Escribe un mensaje...';}
+    function toggleTheme(){const h=document.documentElement,icons=document.querySelectorAll('#theme-icon,#theme-icon-mobile');if(h.classList.contains('dark')){h.classList.remove('dark');icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-moon"></i>');}else{h.classList.add('dark');icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-sun"></i>');}}
+    const cD=document.querySelector('.custom-cursor-dot'),cO=document.querySelector('.custom-cursor-outline');if(window.matchMedia("(pointer:fine)").matches&&cD){window.addEventListener('mousemove',e=>{cD.style.left=`${e.clientX}px`;cD.style.top=`${e.clientY}px`;cO.animate({left:`${e.clientX}px`,top:`${e.clientY}px`},{duration:500,fill:"forwards"});});document.querySelectorAll('.interactive-el,a,button,input,textarea,select').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));});}
+    </script>
+</body>
+</html>

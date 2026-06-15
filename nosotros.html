@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><span class="lang-es">Nosotros</span> | Campo's Visión — El Equipo</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: {
+                    main: 'var(--bg-main)', sec: 'var(--bg-sec)', accent: 'var(--accent)',
+                    textmain: 'var(--text-main)', textsec: 'var(--text-sec)', bordercolor: 'var(--border-color)'
+                },
+                fontFamily: {
+                    sans: ['Inter','-apple-system','BlinkMacSystemFont','sans-serif'], 
+                    display: ['Montserrat','sans-serif'], 
+                    serif: ['Cormorant Garamond','serif']
+                }
+            }}
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&family=Montserrat:wght@200;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* === APPLE DESIGN SYSTEM VARIABLES === */
+        :root {
+            --apple-radius: 32px;
+            --pill-radius: 9999px;
+            --bg-main: #f5f5f7;
+            --bg-sec: #ffffff;
+            --text-main: #1d1d1f;
+            --text-sec: #86868b;
+            --accent: #000000;
+            --accent-inv: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --border-color: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --line: rgba(0, 0, 0, 0.08);
+        }
+
+        html.dark {
+            --bg-main: #000000;
+            --bg-sec: #0f0f0f;
+            --text-main: #f5f5f7;
+            --text-sec: #86868b;
+            --accent: #ffffff;
+            --accent-inv: #000000;
+            --glass-bg: rgba(29, 29, 31, 0.65);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --line: rgba(255, 255, 255, 0.06);
+        }
+        
+        body { background-color:var(--bg-main); color:var(--text-sec); transition:background-color 0.5s ease,color 0.5s ease; }
+        html[lang="es"] .lang-en { display:none !important; }
+        html[lang="en"] .lang-es { display:none !important; }
+        
+        /* APPLE GLASSMORPHISM */
+        .glass-nav { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--pill-radius); box-shadow:0 4px 24px rgba(0,0,0,0.04); }
+        .glass-panel { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--apple-radius); box-shadow:0 8px 32px rgba(0,0,0,0.04); overflow:hidden; }
+        .btn-apple { border-radius:var(--pill-radius); transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),background-color 0.3s; }
+        .btn-apple:hover { transform:scale(1.02); }
+
+        .reveal { opacity:0; transform:translateY(40px); transition:all 1s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+        .delay-100{transition-delay:100ms} .delay-200{transition-delay:200ms} .delay-300{transition-delay:300ms}
+        .text-reveal-item { opacity:0; transform:translateY(30px); }
+        .text-reveal-item.show { animation:slideUpFade 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+        @keyframes slideUpFade { to { opacity:1; transform:translateY(0); } }
+        
+        .film-grain { position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9998; opacity:0.03; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        
+        @media (pointer:fine) {
+            body,a,button,input,textarea,select{cursor:none}
+            .custom-cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;}
+            .custom-cursor-outline{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,background-color 0.2s;}
+            body.hovering .custom-cursor-dot{width:0;height:0}
+            body.hovering .custom-cursor-outline{width:60px;height:60px;background-color:rgba(128,128,128,0.2);backdrop-filter:blur(4px);border-color:transparent;}
+        }
+        
+        .hero-scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--text-main),transparent);animation:scrollLine 2.5s infinite cubic-bezier(0.65,0,0.35,1)}
+        @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+        
+        /* 3D Cards */
+        .tilt-card{transform-style:preserve-3d;will-change:transform;transition:transform 0.1s;display:block}
+        .glare{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:30;mix-blend-mode:overlay;border-radius:inherit}
+        .tilt-card:hover .glare{opacity:1}
+        
+        /* Chat */
+        .chat-modal{position:fixed;bottom:160px;right:24px;width:340px;transform:translateY(20px) scale(0.95);opacity:0;pointer-events:none;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);z-index:9998;}
+        .chat-modal.active{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+        .chat-msg-user{background:var(--accent);color:var(--accent-inv);padding:10px 14px;border-radius:20px;max-width:82%;align-self:flex-end;font-size:0.85rem;font-weight:500;line-height:1.4}
+        .chat-msg-ai{background:var(--glass-border);color:var(--text-main);padding:10px 14px;border-radius:20px;max-width:82%;align-self:flex-start;font-size:0.85rem;line-height:1.4}
+        .chat-typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+        .chat-typing span{width:6px;height:6px;background:var(--text-sec);border-radius:50%;animation:typingDot 1.2s infinite}
+        .chat-typing span:nth-child(2){animation-delay:0.2s}
+        .chat-typing span:nth-child(3){animation-delay:0.4s}
+        @keyframes typingDot{0%,80%,100%{transform:scale(1);opacity:0.4}40%{transform:scale(1.3);opacity:1}}
+        
+        #mobile-menu{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1)}
+        #mobile-menu.open{max-height:400px}
+        @keyframes scanline{0%{top:-10%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:110%;opacity:0}}
+        .timeline-dot{width:12px;height:12px;background:var(--accent);border:3px solid var(--bg-main)}
+    </style>
+</head>
+<body class="bg-main text-textsec font-sans antialiased overflow-x-hidden selection:bg-accent selection:text-accent-inv">
+
+    <div class="film-grain"></div>
+    <div class="custom-cursor-dot hidden md:block"></div>
+    <div class="custom-cursor-outline hidden md:block"></div>
+
+    <!-- Video de Fondo Global -->
+    <video autoplay loop muted playsinline class="fixed top-0 left-0 w-full h-full object-cover -z-10 opacity-20 dark:opacity-30">
+        <source src="imagenes/VideoFondo.mp4" type="video/mp4">
+    </video>
+
+    <nav class="fixed w-full z-50 top-6 px-4 md:px-8 transition-all duration-500" id="navbar">
+        <div class="glass-nav max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="font-display text-xl font-bold text-textmain tracking-widest uppercase interactive-el">
+                Campo's<span class="font-serif italic font-light opacity-50">.</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-textmain">
+                <a href="index.html"      class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                <a href="nosotros.html"   class="text-[var(--text-main)] font-semibold interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                <a href="Servicios.html"  class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                <a href="portafolio.html" class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                <a href="contacto.html"   class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleLanguage()" id="langToggle" class="text-sm font-semibold w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <span class="lang-es">EN</span><span class="lang-en">ES</span>
+                </button>
+                <button onclick="toggleTheme()" id="theme-icon" class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <i class="fa-solid fa-sun dark:hidden"></i>
+                    <i class="fa-solid fa-moon hidden dark:block"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-textmain text-xl interactive-el ml-2" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full mt-4 glass-panel px-6">
+                <div class="py-6 flex flex-col space-y-4 text-sm font-semibold text-textmain">
+                    <a href="index.html">      <span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                    <a href="nosotros.html" class="text-[var(--text-main)]">   <span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                    <a href="Servicios.html">  <span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                    <a href="portafolio.html"> <span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                    <a href="contacto.html">   <span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative z-10 pt-16">
+
+        <header class="relative min-h-[88vh] flex flex-col items-center justify-center overflow-hidden border-b border-[var(--glass-border)] px-6">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.2] overflow-hidden z-0">
+                <h2 class="font-display font-black text-[10rem] md:text-[18rem] text-textmain uppercase tracking-tighter leading-none">TEAM</h2>
+            </div>
+            <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <!-- SECCIÓN QUIÉNES SOMOS -->
+            <div class="flex items-center justify-center gap-4 mb-8 text-reveal-item show">
+                <!-- Subí la opacidad de las líneas laterales de 40 a 70 -->
+                <div class="w-10 h-px bg-textmain/70 drop-shadow-sm"></div>
+                
+                <!-- Cambié text-textmain/50 a text-textmain/90 y agregué drop-shadow-sm -->
+                <p class="text-textmain/90 uppercase tracking-[0.45em] text-[0.65rem] font-bold font-display drop-shadow-sm">
+                    <span class="lang-es">Quiénes Somos</span><span class="lang-en">Who We Are</span>
+                </p>
+                
+                <div class="w-10 h-px bg-textmain/70 drop-shadow-sm"></div>
+            </div>
+
+            <!-- TÍTULO PRINCIPAL (Mantenido casi igual, pero le añadí drop-shadow-sm por si acaso) -->
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl text-textmain font-extrabold mb-8 uppercase text-reveal-item show leading-[0.9] tracking-tight drop-shadow-sm">
+                <span class="lang-es">Detrás de<br/><span class="font-serif italic font-light tracking-normal lowercase text-textmain/70">la lente</span></span>
+                <span class="lang-en">Behind<br/><span class="font-serif italic font-light tracking-normal lowercase text-textmain/70">the lens</span></span>
+            </h1>
+
+            <!-- PÁRRAFO "SOMOS UNA FAMILIA" -->
+            <!-- Cambié text-textsec por text-textmain/90, font-light por font-medium y agregué drop-shadow-md -->
+            <p class="text-lg md:text-xl text-textmain/90 font-medium max-w-2xl mx-auto text-reveal-item show leading-relaxed drop-shadow-md">
+                <span class="lang-es">Somos una familia de cineastas apasionados, nacidos en Cartagena de Indias, con los ojos puestos en el mundo.</span>
+                <span class="lang-en">We are a family of passionate filmmakers, born in Cartagena de Indias, with our eyes set on the world.</span>
+            </p>
+        </div>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40">
+                <div class="hero-scroll-line"></div>
+                <span class="text-[0.6rem] uppercase tracking-[0.35em] text-textmain font-bold font-display">Scroll</span>
+            </div>
+        </header>
+
+        <section class="py-32 px-6 bg-transparent border-b border-[var(--glass-border)]">
+            <div class="max-w-5xl mx-auto text-center reveal">
+                <i class="fa-solid fa-quote-right text-4xl text-textmain/10 mb-8 block"></i>
+                <blockquote class="font-serif text-3xl md:text-5xl text-textmain font-light leading-tight italic mb-12">
+                    <span class="lang-es">"Cada historia que grabamos <span class="font-normal not-italic underline underline-offset-4">existe sólo una vez.</span> Por eso la tratamos como si fuera la última."</span>
+                    <span class="lang-en">"Every story we film <span class="font-normal not-italic underline underline-offset-4">exists only once.</span> That's why we treat it as if it were the last."</span>
+                </blockquote>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left text-sm text-textsec font-light leading-relaxed">
+                    <p class="reveal delay-100">
+                        <span class="lang-es">Campo’s Vision nace de la convicción de que una imagen no se toma: se encuentra.
+                        En lo que ocurre sin aviso, en lo que no se repite, en esos instantes donde la emoción no se posa, simplemente sucede.</span>
+                        <span class="lang-en">Campo’s Vision is born from the conviction that an image is not taken: it is found.
+                        In what happens without warning, in what does not repeat, in those moments where emotion does not settle, it simply happens.</span>
+                    </p>
+                    <p class="reveal delay-200 md:border-l border-[var(--glass-border)] md:pl-6">
+                        <span class="lang-es">Trabajamos desde la escucha y la paciencia, permitiendo que cada historia marque su propio ritmo. No dirigimos momentos ni forzamos escenas; observamos, sentimos y dejamos que lo auténtico se manifieste con naturalidad.</span>
+                        <span class="lang-en">We work from listening and patience, allowing each story to mark its own rhythm. We don't direct moments or force scenes; we observe, feel and let the authentic manifest with naturalness.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 border-b border-[var(--glass-border)] px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20 reveal">
+                    <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4"><span class="lang-es">El Equipo</span><span class="lang-en">The Team</span></p>
+                    <h2 class="font-display text-4xl md:text-5xl text-textmain font-bold uppercase">
+                        <span class="lang-es">Las mentes detrás de <span class="font-serif italic font-light tracking-normal lowercase text-textmain/40">cada toma</span></span>
+                        <span class="lang-en">The minds behind <span class="font-serif italic font-light tracking-normal lowercase text-textmain/40">every frame</span></span>
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                    
+                    <div class="tilt-card group interactive-el reveal glass-panel flex flex-col md:flex-row">
+                        <div class="glare"></div>
+                        <div class="md:w-5/12 overflow-hidden relative h-64 md:h-auto">
+                            <!-- Solo asegúrate de que el nombre coincida exactamente con tu archivo local (respetando mayúsculas/minúsculas) -->
+                            <img src="imagenes/BRIAN.jpg" alt="Brian Campo" 
+                                class="absolute inset-0 w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+                            <div class="absolute w-full h-[1.5px] bg-white/60 opacity-0 group-hover:opacity-100 pointer-events-none" style="animation:scanline 2.5s ease-in-out infinite;"></div>
+                        </div>
+                        <div class="md:w-7/12 p-8 flex flex-col justify-center relative z-10">
+                            <h3 class="font-display text-2xl font-bold text-textmain uppercase mb-1">Brian Campo</h3>
+                            <p class="text-textmain/40 text-[0.65rem] uppercase tracking-[0.2em] font-bold mb-5">Director General · Filmmaker</p>
+                            <p class="text-[var(--text-sec)] text-sm leading-relaxed mb-6">
+                                <span class="lang-es">Con más de 7 años documentando momentos únicos, Brian es el alma creativa. Su obsesión por la luz natural y las narrativas emocionales lo han llevado a trabajar con marcas nacionales e internacionales.</span>
+                                <span class="lang-en">With over 7 years documenting unique moments, Brian is the creative soul. His obsession with natural light and emotional narratives has led him to work with national and international brands.</span>
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold"><span class="lang-es">Dirección</span><span class="lang-en">Direction</span></span>
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold"><span class="lang-es">Edición</span><span class="lang-en">Editing</span></span>
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold">Color Grading</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tilt-card group interactive-el reveal delay-100 glass-panel flex flex-col md:flex-row">
+                        <div class="glare"></div>
+                        <div class="md:w-5/12 overflow-hidden relative h-64 md:h-auto">
+                            <!-- Solo asegúrate de que el nombre coincida exactamente con tu archivo local (respetando mayúsculas/minúsculas) -->
+                            <img src="imagenes/CAMPO'S VISION.jpg" alt="Brian Campo" 
+                                class="absolute inset-0 w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+                            <div class="absolute w-full h-[1.5px] bg-white/60 opacity-0 group-hover:opacity-100 pointer-events-none" style="animation:scanline 2.5s ease-in-out infinite;"></div>
+                        </div>
+                        <div class="md:w-7/12 p-8 flex flex-col justify-center relative z-10">
+                            <h3 class="font-display text-2xl font-bold text-textmain uppercase mb-1">Miguel Campo</h3>
+                            <p class="text-textmain/40 text-[0.65rem] uppercase tracking-[0.2em] font-bold mb-5"><span class="lang-es">Dir. Fotografía · Piloto Dron</span><span class="lang-en">Dir. of Photography · Drone Pilot</span></p>
+                            <p class="text-[var(--text-sec)] text-sm leading-relaxed mb-6">
+                                <span class="lang-es">El ojo técnico del equipo. Especialista en iluminación cinematográfica y piloto certificado de dron. Sus perspectivas aéreas han transformado bodas y documentales en obras de arte visuales.</span>
+                                <span class="lang-en">The team's technical eye. Specialist in cinematic lighting and certified drone pilot. His aerial perspectives have transformed weddings and documentaries into visual artworks.</span>
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold"><span class="lang-es">Fotografía</span><span class="lang-en">Photography</span></span>
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold">Drone</span>
+                                <span class="text-[0.6rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-textmain uppercase font-semibold"><span class="lang-es">Iluminación</span><span class="lang-en">Lighting</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 border-b border-[var(--glass-border)] px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-20 reveal">
+                    <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4"><span class="lang-es">Nuestra Trayectoria</span><span class="lang-en">Our Journey</span></p>
+                    <h2 class="font-display text-4xl md:text-5xl text-textmain font-bold uppercase">
+                        <span class="lang-es">De Cartagena <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">al mundo</span></span>
+                        <span class="lang-en">From Cartagena <span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">to the world</span></span>
+                    </h2>
+                </div>
+
+                <div class="relative">
+                    <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-[var(--glass-border)] -translate-x-1/2"></div>
+
+                    <div class="flex flex-col gap-12">
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full reveal">
+                            <div class="order-1 md:w-5/12 text-center md:text-right mb-4 md:mb-0 md:pr-12">
+                                <div class="glass-panel p-6 inline-block text-left md:text-right hover:scale-105 transition-transform duration-300">
+                                    <p class="font-display text-4xl font-black text-textmain/10 mb-2">2017</p>
+                                    <h4 class="font-bold text-textmain text-lg mb-2"><span class="lang-es">Los Orígenes</span><span class="lang-en">The Origins</span></h4>
+                                    <p class="text-sm text-textsec leading-relaxed"><span class="lang-es">Brian filma su primera boda con una cámara prestada en Cartagena. La idea de crear algo distinto nace.</span><span class="lang-en">Brian films his first wedding with a borrowed camera in Cartagena. The idea of creating something different is born.</span></p>
+                                </div>
+                            </div>
+                            <div class="z-20 flex items-center justify-center order-1 w-4 h-4 bg-[var(--bg-main)] border-[3px] border-[var(--accent)] rounded-full hidden md:block"></div>
+                            <div class="order-1 md:w-5/12 hidden md:block"></div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full reveal">
+                            <div class="order-1 md:w-5/12 hidden md:block"></div>
+                            <div class="z-20 flex items-center justify-center order-1 w-4 h-4 bg-[var(--bg-main)] border-[3px] border-[var(--accent)] rounded-full hidden md:block"></div>
+                            <div class="order-1 md:w-5/12 text-center md:text-left mb-4 md:mb-0 md:pl-12">
+                                <div class="glass-panel p-6 inline-block text-left hover:scale-105 transition-transform duration-300">
+                                    <p class="font-display text-4xl font-black text-textmain/10 mb-2">2019</p>
+                                    <h4 class="font-bold text-textmain text-lg mb-2"><span class="lang-es">Campo's Visión</span><span class="lang-en">Campo's Visión</span></h4>
+                                    <p class="text-sm text-textsec leading-relaxed"><span class="lang-es">Miguel se une al proyecto. Nace oficialmente la marca. Primeros clientes corporativos y bodas de destino.</span><span class="lang-en">Miguel joins the project. The brand is officially born. First corporate clients and destination weddings.</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full reveal">
+                            <div class="order-1 md:w-5/12 text-center md:text-right mb-4 md:mb-0 md:pr-12">
+                                <div class="glass-panel p-6 inline-block text-left md:text-right hover:scale-105 transition-transform duration-300">
+                                    <p class="font-display text-4xl font-black text-textmain/10 mb-2">2022</p>
+                                    <h4 class="font-bold text-textmain text-lg mb-2"><span class="lang-es">Expansión Aérea</span><span class="lang-en">Aerial Expansion</span></h4>
+                                    <p class="text-sm text-textsec leading-relaxed"><span class="lang-es">Miguel obtiene licencia de piloto dron. Filman "Voces del Campo" para Minagricultura en Roma.</span><span class="lang-en">Miguel gets drone pilot license. They film "Voces del Campo" for Minagricultura in Rome.</span></p>
+                                </div>
+                            </div>
+                            <div class="z-20 flex items-center justify-center order-1 w-4 h-4 bg-[var(--bg-main)] border-[3px] border-[var(--accent)] rounded-full hidden md:block"></div>
+                            <div class="order-1 md:w-5/12 hidden md:block"></div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full reveal">
+                            <div class="order-1 md:w-5/12 hidden md:block"></div>
+                            <div class="z-20 flex items-center justify-center order-1 w-5 h-5 bg-[var(--bg-main)] border-[4px] border-[var(--accent)] rounded-full shadow-[0_0_15px_var(--accent)] hidden md:block animate-pulse"></div>
+                            <div class="order-1 md:w-5/12 text-center md:text-left mb-4 md:mb-0 md:pl-12">
+                                <div class="glass-panel p-6 inline-block text-left border-[var(--accent)] shadow-lg hover:scale-105 transition-transform duration-300">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
+                                        <p class="font-display text-4xl font-black text-textmain/10">2026</p>
+                                    </div>
+                                    <h4 class="font-bold text-textmain text-lg mb-2"><span class="lang-es">El Siguiente Nivel</span><span class="lang-en">The Next Level</span></h4>
+                                    <p class="text-sm text-textsec leading-relaxed"><span class="lang-es">+250 proyectos y presencia internacional. Trabajando con Monster Energy, Nescafé y Bodas Premium de Destino.</span><span class="lang-en">+250 projects and international presence. Working with Monster Energy, Nescafé, and Premium Destination Weddings.</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 border-b border-[var(--glass-border)] text-center px-6 relative overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.025]">
+                <span class="font-display font-black text-[8rem] md:text-[14rem] text-textmain uppercase leading-none">READY</span>
+            </div>
+            <div class="relative z-10 max-w-3xl mx-auto reveal">
+                <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4"><span class="lang-es">¿Trabajamos juntos?</span><span class="lang-en">Work with us?</span></p>
+                <h2 class="font-display text-4xl md:text-5xl text-textmain font-bold mb-6 uppercase">
+                    <span class="lang-es">Tu próximo proyecto<br/><span class="font-serif italic font-light tracking-normal lowercase text-textmain/40">nos espera</span></span>
+                    <span class="lang-en">Your next project<br/><span class="font-serif italic font-light tracking-normal lowercase text-textmain/40">awaits us</span></span>
+                </h2>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+                    <a href="https://wa.me/573001234567" target="_blank" class="btn-apple bg-[#25D366] text-white px-8 py-4 font-semibold interactive-el flex items-center justify-center gap-2 hover:bg-[#1ebd5a]">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span class="lang-es">WhatsApp Directo</span><span class="lang-en">Direct WhatsApp</span>
+                    </a>
+                    <a href="contacto.html" class="btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-8 py-4 font-semibold interactive-el flex items-center justify-center gap-2 hover:bg-[var(--text-main)] hover:text-[var(--bg-main)]">
+                        <i class="fas fa-envelope text-xl"></i>
+                        <span class="lang-es">Formulario Completo</span><span class="lang-en">Full Contact Form</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="max-w-6xl mx-auto px-4 py-20 mt-10">
+            <div class="glass-panel p-12 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[var(--glass-border)]">
+                <div class="flex flex-col gap-4">
+                    <a href="index.html" class="font-display font-bold text-2xl tracking-tight interactive-el">Campo's<span class="font-serif italic font-light opacity-50">.</span></a>
+                    <p class="text-sm text-[var(--text-sec)] leading-relaxed">
+                        <span class="lang-es">Productora Premium · Cartagena de Indias</span>
+                        <span class="lang-en">Premium Production · Cartagena de Indias</span>
+                    </p>
+                    <div class="flex gap-4 mt-2">
+                        <a href="https://www.instagram.com/camposvision_/" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-vimeo-v"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">Navegación</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="nosotros.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a></li>
+                        <li><a href="servicios.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a></li>
+                        <li><a href="portafolio.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a></li>
+                        <li><a href="contacto.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">
+                        <span class="lang-es">Contacto Directo</span><span class="lang-en">Get in Touch</span>
+                    </h4>
+                    <a href="mailto:info@camposvision.com" class="block text-sm font-semibold mb-2 hover:text-[var(--accent)] interactive-el">info@camposvision.com</a>
+                    <p class="text-xs text-[var(--text-sec)] mt-4">
+                        <span class="lang-es">Cartagena, Colombia. <br> Disponible para proyectos mundiales.</span>
+                        <span class="lang-en">Cartagena, Colombia. <br> Available for global projects.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 text-[10px] text-[var(--text-sec)] uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-2">
+                <p>&copy; 2026 Campo's Visión.</p>
+                <p><span class="lang-es">Desarrollado por el Senior Angel</span><span class="lang-en">Developed by Senior Angel</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 items-end">
+        
+        <div id="ai-chat-modal" class="chat-modal glass-panel shadow-2xl overflow-hidden flex flex-col">
+            <div class="bg-[var(--glass-bg)] border-b border-[var(--glass-border)] p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center text-xs"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Visión AI</h4>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            <p class="text-[var(--text-sec)] text-[10px]"><span class="lang-es">Online</span><span class="lang-en">Online</span></p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAIChat()" class="hover:text-[var(--accent)] transition-colors interactive-el p-1 text-[var(--text-sec)]"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-[200px] max-h-[320px]">
+                <div class="chat-msg-ai">
+                    <span class="lang-es">¡Hola! 👋 Soy <strong>Visión AI</strong>. Conozco todo sobre Brian, Miguel y la historia de Campo's Visión. ¿Qué quieres saber?</span>
+                    <span class="lang-en">Hi! 👋 I'm <strong>Visión AI</strong>. I know everything about Brian, Miguel and the Campo's Visión story. What would you like to know?</span>
+                </div>
+            </div>
+            
+            <div class="px-3 py-2 flex gap-2 flex-wrap border-t border-[var(--glass-border)]">
+                <button onclick="sendQuickMsg('¿Quién es Brian Campo?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Brian</button>
+                <button onclick="sendQuickMsg('¿Quién es Miguel Campo?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Miguel</button>
+                <button onclick="sendQuickMsg('¿Cuándo empezó Campo Visión?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Historia</button>
+            </div>
+            
+            <div class="p-3 border-t border-[var(--glass-border)] flex gap-2 items-center bg-[var(--glass-bg)]">
+                <input type="text" id="ai-input" placeholder="Escribe un mensaje..." class="interactive-el flex-1 bg-transparent border-none outline-none text-sm text-[var(--text-main)] px-2 placeholder-[var(--text-sec)]">
+                <button onclick="sendAIMessage()" class="interactive-el w-9 h-9 shrink-0 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center hover:opacity-70 transition-opacity">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+        
+        <button onclick="toggleAIChat()" class="chat-fab-pulse relative interactive-el w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition-transform" id="chat-fab">
+            <i class="fa-solid fa-robot" id="chat-fab-icon"></i>
+        </button>
+        <a href="https://wa.me/573001234567" target="_blank" class="interactive-el w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#1ebd5a] hover:scale-110 transition-all flex items-center justify-center text-2xl">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+    const CAMPOS_SYSTEM_PROMPT = `Eres "Visión AI", el asistente oficial de Campo's Visión. Fundadores: Brian Campo (Director/Filmmaker 7+ años) y Miguel Campo (Dir. Fotografía/Piloto Dron). Cartagena de Indias, Colombia. +250 proyectos. Clientes: Monster Energy, Nescafé, Bodas Premium. Instagram: @camposvision_. WhatsApp: +57 300 123 4567. Servicios: Video, Fotografía, Dron. Responde de forma cálida y profesional en el idioma del usuario. Máximo 3-4 oraciones.`;
+
+    const chatHistory = [];
+    async function callCamposAI(msg) {
+        chatHistory.push({ role:'user', content:msg });
+        try {
+            const res = await fetch('https://api.anthropic.com/v1/messages', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system:CAMPOS_SYSTEM_PROMPT, messages:chatHistory })
+            });
+            const data = await res.json();
+            const reply = data.content?.map(b=>b.text||'').join('') || '';
+            if(reply) chatHistory.push({role:'assistant',content:reply});
+            return reply || '¿Puedes repetir tu pregunta?';
+        } catch(e) { return 'Error de conexión. Escríbenos en <a href="https://wa.me/573001234567" target="_blank" class="underline">WhatsApp</a>.'; }
+    }
+    function appendUserBubble(t){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-user';d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    function appendTyping(){const b=document.getElementById('chat-messages'),t=document.createElement('div');t.className='chat-msg-ai chat-typing';t.id='typing-indicator';t.innerHTML='<span></span><span></span><span></span>';b.appendChild(t);b.scrollTop=b.scrollHeight;return t;}
+    function appendAIBubble(h){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-ai';d.innerHTML=h;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    async function sendAIMessage(){const i=document.getElementById('ai-input'),m=i.value.trim();if(!m)return;appendUserBubble(m);i.value='';const t=appendTyping();const r=await callCamposAI(m);t.remove();appendAIBubble(r);}
+    async function sendQuickMsg(text){appendUserBubble(text);const t=appendTyping();const r=await callCamposAI(text);t.remove();appendAIBubble(r);}
+    document.getElementById('ai-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendAIMessage();});
+    function toggleAIChat(){const m=document.getElementById('ai-chat-modal'),i=document.getElementById('chat-fab-icon');m.classList.toggle('active');i.className=m.classList.contains('active')?'fa-solid fa-xmark':'fa-solid fa-robot';}
+
+    window.addEventListener('load',()=>{document.querySelectorAll('.text-reveal-item').forEach(el=>el.classList.add('show'));});
+    
+    // Navbar Scroll modificado ligeramente para que combine con el estilo apple
+    const nav=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>{
+        if(window.scrollY>50){
+            nav.classList.add('py-2');
+            nav.classList.remove('py-4');
+        } else {
+            nav.classList.remove('py-2');
+            nav.classList.add('py-4');
+        }
+    });
+    
+    function toggleMobileMenu(){const m=document.getElementById('mobile-menu'),b=document.getElementById('hamburger-btn');m.classList.toggle('open');b.innerHTML=m.classList.contains('open')?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>';}
+    const revealObs=new IntersectionObserver((entries,obs)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');e.target.querySelectorAll('.text-reveal-item').forEach(el=>el.classList.add('show'));obs.unobserve(e.target);}});},{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+    
+    function toggleLanguage(){const l=document.documentElement.getAttribute('lang')==='es'?'en':'es';document.documentElement.setAttribute('lang',l);const i=document.getElementById('ai-input');if(i)i.placeholder=l==='en'?'Type a message...':'Escribe un mensaje...';}
+    
+    function toggleTheme(){
+        const h=document.documentElement,icons=document.querySelectorAll('#theme-icon,#theme-icon-mobile');
+        if(h.classList.contains('dark')){
+            h.classList.remove('dark');
+            icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-moon"></i>');
+        }else{
+            h.classList.add('dark');
+            icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-sun"></i>');
+        }
+    }
+    
+    document.querySelectorAll('.tilt-card').forEach(card=>{
+        const g=card.querySelector('.glare');
+        card.addEventListener('mousemove',e=>{
+            const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,rX=((y-r.height/2)/r.height)*-5,rY=((x-r.width/2)/r.width)*5;
+            card.style.transform=`perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) scale3d(1.01,1.01,1.01)`;
+            if(g)g.style.background=`radial-gradient(circle at ${x}px ${y}px,rgba(255,255,255,0.15),transparent 60%)`;
+        });
+        card.addEventListener('mouseleave',()=>{
+            card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+            card.style.transition='transform 0.5s ease';
+            if(g)g.style.opacity='0';
+        });
+        card.addEventListener('mouseenter',()=>card.style.transition='none');
+    });
+    
+    const cD=document.querySelector('.custom-cursor-dot'),cO=document.querySelector('.custom-cursor-outline');
+    if(window.matchMedia("(pointer:fine)").matches&&cD){
+        window.addEventListener('mousemove',e=>{
+            cD.style.left=`${e.clientX}px`;cD.style.top=`${e.clientY}px`;
+            cO.animate({left:`${e.clientX}px`,top:`${e.clientY}px`},{duration:500,fill:"forwards"});
+        });
+        document.querySelectorAll('.interactive-el,a,button,input,textarea').forEach(el=>{
+            el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio | Campo's Visión — Selected Work</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: { 
+                    main:'var(--bg-main)', sec:'var(--bg-sec)', accent:'var(--accent)', 
+                    textmain:'var(--text-main)', textsec:'var(--text-sec)', bordercolor:'var(--border-color)' 
+                },
+                fontFamily: { 
+                    sans:['Inter','sans-serif'], 
+                    display:['Montserrat','sans-serif'], 
+                    serif:['Cormorant Garamond','serif'] 
+                }
+            }}
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;600&family=Montserrat:wght@200;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* === APPLE DESIGN SYSTEM VARIABLES === */
+        :root {
+            --apple-radius: 32px;
+            --pill-radius: 9999px;
+            --bg-main: #f5f5f7;
+            --bg-sec: #ffffff;
+            --text-main: #1d1d1f;
+            --text-sec: #86868b;
+            --accent: #000000;
+            --accent-inv: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --border-color: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --line: rgba(0, 0, 0, 0.08);
+        }
+
+        html.dark {
+            --bg-main: #000000;
+            --bg-sec: #0f0f0f;
+            --text-main: #f5f5f7;
+            --text-sec: #86868b;
+            --accent: #ffffff;
+            --accent-inv: #000000;
+            --glass-bg: rgba(29, 29, 31, 0.65);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --line: rgba(255, 255, 255, 0.06);
+        }
+        
+        body { background-color:var(--bg-main); color:var(--text-sec); transition:background-color 0.5s ease,color 0.5s ease; }
+        html[lang="es"] .lang-en{display:none!important} html[lang="en"] .lang-es{display:none!important}
+        
+        /* APPLE GLASSMORPHISM */
+        .glass-nav { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--pill-radius); box-shadow:0 4px 24px rgba(0,0,0,0.04); }
+        .glass-panel { background:var(--glass-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--apple-radius); box-shadow:0 8px 32px rgba(0,0,0,0.04); overflow:hidden; }
+        .btn-apple { border-radius:var(--pill-radius); transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),background-color 0.3s; }
+        .btn-apple:hover { transform:scale(1.02); }
+
+        .reveal { opacity:0; transform:translateY(40px); transition:all 1s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+        .delay-100 { transition-delay:100ms; } 
+        .delay-200 { transition-delay:200ms; } 
+        .delay-300 { transition-delay:300ms; }
+        
+        .film-grain { position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9998; opacity:0.03; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        
+        @media (pointer:fine) {
+            body,a,button,input,textarea,select{cursor:none}
+            .custom-cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;}
+            .custom-cursor-outline{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,background-color 0.2s;}
+            body.hovering .custom-cursor-dot{width:0;height:0}
+            body.hovering .custom-cursor-outline{width:60px;height:60px;background-color:rgba(128,128,128,0.2);backdrop-filter:blur(4px);border-color:transparent;}
+        }
+
+        /* Tilt */
+        .tilt-card { transform-style:preserve-3d; will-change:transform; display:block; border-radius: 24px; overflow: hidden; }
+        .glare { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:30; mix-blend-mode:overlay; }
+        .tilt-card:hover .glare { opacity:1; }
+
+        /* Filter pills - APPLE STYLE */
+        .filter-pill { padding: 0.6rem 1.5rem; border: 1px solid var(--glass-border); border-radius: var(--pill-radius); font-size: 0.75rem; font-weight: 600; font-family: 'Inter', sans-serif; color: var(--text-sec); background: var(--glass-bg); backdrop-filter: blur(10px); transition: all 0.3s ease; cursor: pointer; }
+        .filter-pill:hover { background: var(--border-color); color: var(--text-main); }
+        .filter-pill.active { background: var(--accent); color: var(--accent-inv); border-color: var(--accent); }
+
+        /* Portfolio items */
+        .portfolio-item { transition: opacity 0.5s ease, transform 0.5s ease; }
+        .portfolio-item.hidden-item { opacity: 0; pointer-events: none; transform: scale(0.96); position: absolute; visibility: hidden; }
+
+        /* Chat Modal - APPLE STYLE */
+        .chat-modal { position:fixed; bottom:160px; right:24px; width:340px; transform:translateY(20px) scale(0.95); opacity:0; pointer-events:none; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); z-index:9998; border-radius: 24px; overflow: hidden; }
+        .chat-modal.active { transform:translateY(0) scale(1); opacity:1; pointer-events:auto; }
+        .chat-msg-user { background:var(--accent); color:var(--accent-inv); padding:10px 14px; border-radius:20px; max-width:82%; align-self:flex-end; font-size:0.85rem; font-weight:500; line-height:1.4; }
+        .chat-msg-ai { background:var(--glass-border); color:var(--text-main); padding:10px 14px; border-radius:20px; max-width:82%; align-self:flex-start; font-size:0.85rem; line-height:1.4; }
+        .chat-typing { display:flex; gap:4px; align-items:center; padding:10px 14px; }
+        .chat-typing span { width:6px; height:6px; background:var(--text-sec); border-radius:50%; animation:typingDot 1.2s infinite; }
+        .chat-typing span:nth-child(2) { animation-delay:0.2s; }
+        .chat-typing span:nth-child(3) { animation-delay:0.4s; }
+        @keyframes typingDot { 0%,80%,100%{transform:scale(1);opacity:0.4} 40%{transform:scale(1.3);opacity:1} }
+        
+        #mobile-menu { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
+        #mobile-menu.open { max-height:400px; }
+        
+        /* Video modal */
+        #videoModal { transition:opacity 0.3s ease; }
+        @keyframes scanline { 0%{top:-10%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:110%;opacity:0} }
+    </style>
+</head>
+<body class="bg-main text-textsec font-sans antialiased overflow-x-hidden selection:bg-accent selection:text-accent-inv">
+    
+    <div class="film-grain"></div>
+    <div class="custom-cursor-dot hidden md:block"></div>
+    <div class="custom-cursor-outline hidden md:block"></div>
+
+    <nav class="fixed w-full z-50 top-6 px-4 md:px-8 transition-all duration-500" id="navbar">
+        <div class="glass-nav max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="font-display text-xl font-bold text-textmain tracking-widest uppercase interactive-el">
+                Campo's<span class="font-serif italic font-light opacity-50">.</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-textmain">
+                <a href="index.html"      class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                <a href="nosotros.html"   class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                <a href="Servicios.html"  class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                <a href="portafolio.html" class="text-[var(--text-main)] font-semibold interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                <a href="contacto.html"   class="text-[var(--text-sec)] hover:text-[var(--text-main)] transition-colors interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleLanguage()" id="langToggle" class="text-sm font-semibold w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <span class="lang-es">EN</span><span class="lang-en">ES</span>
+                </button>
+                <button onclick="toggleTheme()" id="theme-icon" class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--glass-border)] interactive-el">
+                    <i class="fa-solid fa-sun dark:hidden"></i>
+                    <i class="fa-solid fa-moon hidden dark:block"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-textmain text-xl interactive-el ml-2" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full mt-4 glass-panel px-6">
+                <div class="py-6 flex flex-col space-y-4 text-sm font-semibold text-textmain">
+                    <a href="index.html">      <span class="lang-es">Inicio</span><span class="lang-en">Home</span></a>
+                    <a href="nosotros.html">   <span class="lang-es">Nosotros</span><span class="lang-en">About</span></a>
+                    <a href="Servicios.html">  <span class="lang-es">Servicios</span><span class="lang-en">Services</span></a>
+                    <a href="portafolio.html" class="text-[var(--text-main)]"> <span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a>
+                    <a href="contacto.html">   <span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative z-10">
+
+        <header class="relative pt-40 pb-20 border-b border-[var(--glass-border)] px-6 overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.2] overflow-hidden">
+                <h2 class="font-display font-black text-[10rem] md:text-[18rem] text-textmain uppercase tracking-tighter leading-none">WORK</h2>
+            </div>
+            <div class="max-w-6xl mx-auto relative z-10 text-center md:text-left mt-10">
+                <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4 font-display"><span class="lang-es">Trabajo Selecto</span><span class="lang-en">Selected Work</span></p>
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <h1 class="font-display text-5xl md:text-7xl text-textmain font-extrabold uppercase tracking-tight leading-none">
+                        Portafolio<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)] text-4xl md:text-6xl">2023 – 2026</span>
+                    </h1>
+                    <p class="text-[var(--text-sec)] text-sm md:text-base max-w-sm leading-relaxed font-serif">
+                        <span class="lang-es">Cada proyecto es una historia. Filtrá por categoría o explorá todo nuestro trabajo cinematográfico.</span>
+                        <span class="lang-en">Every project is a story. Filter by category or explore all our cinematic work.</span>
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <div class="sticky top-[90px] z-40 bg-[var(--bg-main)]/80 backdrop-blur-xl border-b border-[var(--glass-border)] px-6 py-4 transition-colors duration-500">
+            <div class="max-w-6xl mx-auto flex gap-3 flex-wrap items-center">
+                <button class="filter-pill active interactive-el" data-filter="all"><span class="lang-es">Todo</span><span class="lang-en">All</span></button>
+                <button class="filter-pill interactive-el" data-filter="boda"><span class="lang-es">Bodas</span><span class="lang-en">Weddings</span></button>
+                <button class="filter-pill interactive-el" data-filter="corporativo"><span class="lang-es">Corporativo</span><span class="lang-en">Corporate</span></button>
+                <button class="filter-pill interactive-el" data-filter="documental"><span class="lang-es">Documental</span><span class="lang-en">Documentary</span></button>
+                <button class="filter-pill interactive-el" data-filter="videoclip">Videoclip</button>
+                <button class="filter-pill interactive-el" data-filter="aereo"><span class="lang-es">Aéreo</span><span class="lang-en">Aerial</span></button>
+                
+                <div class="ml-auto text-[0.65rem] uppercase tracking-widest text-[var(--text-sec)] font-bold hidden md:block" id="count-label">
+                    <span id="item-count">9</span> <span class="lang-es">proyectos</span><span class="lang-en">projects</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- GALLERY GRID -->
+        <section class="py-12 px-4 md:px-6 border-b border-[var(--glass-border)]">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[300px] md:auto-rows-[320px]" id="portfolio-grid">
+
+                <!-- 1 — BODA Elegancia Caribe (featured) -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-7 md:row-span-2 reveal cursor-pointer" data-cat="boda" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio1.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=900&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-20 h-20 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-2xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-8 left-8 z-20 group-hover:-translate-y-2 transition-transform duration-500">
+                        <p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Wedding Film · 2024</p>
+                        <h3 class="text-3xl md:text-4xl text-white font-display font-bold uppercase leading-tight">Elegancia<br/>Caribe</h3>
+                        <p class="text-white/50 text-xs mt-2">Cartagena de Indias</p>
+                    </div>
+                </div>
+
+                <!-- 2 — DOCUMENTAL Voces del Campo -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-5 reveal delay-100 cursor-pointer" data-cat="documental" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio2.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Documental · 2024</p><h3 class="text-2xl text-white font-display font-bold uppercase">Voces del Campo</h3><p class="text-white/50 text-xs mt-1">Minagricultura</p></div>
+                </div>
+
+                <!-- 3 — CORPORATIVO Terpel -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-5 reveal delay-200 cursor-pointer" data-cat="corporativo" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio3.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-lg text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Spot · 2024</p><h3 class="text-2xl text-white font-display font-bold uppercase">Terpel</h3><p class="text-white/50 text-xs mt-1">Terpel Colombia</p></div>
+                </div>
+
+                <!-- 4 — VIDEOCLIP Tour Acústico -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-6 reveal delay-100 cursor-pointer" data-cat="videoclip" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio5.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1540654030646-95f74af73b5c?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Videoclip · 2023</p><h3 class="text-2xl text-white font-display font-bold uppercase">Tour Acústico</h3><p class="text-white/50 text-xs mt-1">Artista Nacional</p></div>
+                </div>
+
+                <!-- 5 — CORPORATIVO Hilton -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-6 reveal delay-200 cursor-pointer" data-cat="corporativo" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio6.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-lg text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Institucional</p><h3 class="text-2xl text-white font-display font-bold uppercase">Hilton Promo</h3><p class="text-white/50 text-xs mt-1">Hilton Cartagena</p></div>
+                </div>
+
+                <!-- 6 — AÉREO (wide) -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-12 reveal delay-100 cursor-pointer" data-cat="aereo" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio7.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-20 h-20 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-2xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-8 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Dron Aéreo · 2025</p><h3 class="text-3xl text-white font-display font-bold uppercase">Vista del Caribe</h3><p class="text-white/50 text-xs mt-1">Islas del Rosario</p></div>
+                    <div class="absolute top-4 right-4 z-20 flex items-center gap-2 glass-panel !bg-black/30 backdrop-blur-md px-3 py-1.5 border border-white/10 rounded-full"><i class="fa-solid fa-plane-up text-white/80 text-xs"></i><span class="text-white/80 text-[0.55rem] uppercase tracking-widest font-bold">Drone 4K</span></div>
+                </div>
+
+                <!-- 7 — CORPORATIVO Monster -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-5 reveal delay-200 cursor-pointer" data-cat="corporativo" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/portafolio8.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Spot Comercial</p><h3 class="text-2xl text-white font-display font-bold uppercase">Monster Activation</h3><p class="text-white/50 text-xs mt-1">Monster Energy</p></div>
+                </div>
+
+                <!-- 8 — BODA Tarde en Getsemaní -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-4 reveal delay-100 cursor-pointer" data-cat="boda" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio9.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-xl text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Wedding Film · 2025</p><h3 class="text-2xl text-white font-display font-bold uppercase">Tarde en Getsemaní</h3><p class="text-white/50 text-xs mt-1">Cartagena de Indias</p></div>
+                </div>
+
+                <!-- 9 — DOCUMENTAL Nescafé -->
+                <div class="portfolio-item tilt-card interactive-el group relative bg-black md:col-span-3 reveal delay-200 cursor-pointer" data-cat="corporativo" onclick="window.open('https://www.instagram.com/camposvision_/', '_blank')">
+                    <div class="glare"></div>
+                    <img src="imagenes/Portafolio10.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" onerror="this.src='https://images.unsplash.com/photo-1517627043994-b991abb62fc8?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <div class="w-16 h-16 border border-white/20 glass-panel !bg-white/10 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 rounded-full"><i class="fa-brands fa-instagram text-lg text-white"></i></div>
+                    </div>
+                    <div class="absolute bottom-6 left-6 z-20"><p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1">Comercial · 2025</p><h3 class="text-xl text-white font-display font-bold uppercase">Nescafé Campaign</h3><p class="text-white/50 text-xs mt-1">Nescafé Colombia</p></div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-32 bg-[var(--bg-main)] border-b border-[var(--glass-border)] text-center px-6 relative overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.025]"><span class="font-display font-black text-[8rem] md:text-[16rem] text-[var(--text-main)] uppercase leading-none">REEL</span></div>
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <p class="text-[var(--text-sec)] text-[0.65rem] tracking-[0.3em] uppercase font-bold mb-4 font-display reveal">Showreel 2026</p>
+                <h2 class="font-display text-4xl md:text-5xl text-[var(--text-main)] font-bold uppercase mb-4 reveal delay-100 leading-tight">
+                    <span class="lang-es">Dos minutos.<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">todo nuestro mundo.</span></span>
+                    <span class="lang-en">Two minutes.<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">our whole world.</span></span>
+                </h2>
+                <p class="text-[var(--text-sec)] text-sm md:text-base font-serif max-w-md mx-auto mb-16 reveal delay-200 leading-relaxed">
+                    <span class="lang-es">Un recorrido visual por los mejores momentos cinematográficos de los últimos años de producción.</span>
+                    <span class="lang-en">A visual journey through the best cinematic moments of the last years of production.</span>
+                </p>
+                
+                <div class="reveal delay-300 relative mx-auto w-full max-w-4xl aspect-video overflow-hidden interactive-el group glass-panel cursor-pointer" onclick="openModal('imagenes/VideoFondo.mp4')">
+    
+                    <!-- Video de fondo (miniatura animada) -->
+                    <video src="imagenes/VideoFondo.mp4" class="w-full h-full object-cover brightness-50 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" autoplay muted loop playsinline></video>
+                    
+                    <!-- Efecto de línea de escaneo -->
+                    <div class="absolute w-full h-[1.5px] bg-white/40 pointer-events-none" style="animation:scanline 3s ease-in-out infinite;"></div>
+                    
+                    <!-- Botón de Play central -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-24 h-24 border border-white/20 !bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-3xl group-hover:scale-110 group-hover:bg-white/20 transition-all duration-500 rounded-full">
+                            <i class="fa-solid fa-play ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Textos inferiores -->
+                    <div class="absolute bottom-8 left-8 z-20 text-left">
+                        <p class="text-white/70 text-[0.6rem] uppercase tracking-widest font-bold mb-1"><span class="lang-es">Ver Showreel</span><span class="lang-en">Watch Showreel</span></p>
+                        <h3 class="text-3xl text-white font-display font-bold uppercase">Campo's Visión 2026</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-28 border-b border-[var(--glass-border)] text-center px-6">
+            <div class="max-w-3xl mx-auto reveal">
+                <p class="text-[var(--text-sec)] text-xs tracking-widest uppercase font-semibold mb-4 font-display"><span class="lang-es">¿Lo que viste te gustó?</span><span class="lang-en">Like what you saw?</span></p>
+                <h2 class="font-display text-4xl md:text-5xl text-[var(--text-main)] font-bold uppercase mb-10 leading-tight">
+                    <span class="lang-es">Hagamos algo<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">memorable juntos</span></span>
+                    <span class="lang-en">Let's make something<br/><span class="font-serif italic font-light tracking-normal lowercase text-[var(--text-sec)]">memorable together</span></span>
+                </h2>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="contacto.html" class="btn-apple bg-[var(--glass-border)] text-[var(--text-main)] px-8 py-4 font-semibold interactive-el flex items-center justify-center gap-2 hover:bg-[var(--text-main)] hover:text-[var(--bg-main)]">
+                        <i class="fa-solid fa-arrow-right text-lg"></i>
+                        <span class="lang-es">Cotizar Proyecto</span><span class="lang-en">Get a Quote</span>
+                    </a>
+                    <a href="https://wa.me/573003646036" target="_blank" class="btn-apple bg-[#25D366] text-white px-8 py-4 font-semibold interactive-el flex items-center justify-center gap-2 hover:bg-[#1ebd5a]">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="max-w-6xl mx-auto px-4 py-20 mt-10">
+            <div class="glass-panel p-12 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[var(--glass-border)]">
+                <div class="flex flex-col gap-4">
+                    <a href="index.html" class="font-display font-bold text-2xl tracking-tight interactive-el">Campo's<span class="font-serif italic font-light opacity-50">.</span></a>
+                    <p class="text-sm text-[var(--text-sec)] leading-relaxed">
+                        <span class="lang-es">Productora Premium · Cartagena de Indias</span>
+                        <span class="lang-en">Premium Production · Cartagena de Indias</span>
+                    </p>
+                    <div class="flex gap-4 mt-2">
+                        <a href="https://www.instagram.com/camposvision_/" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-vimeo-v"></i></a>
+                        <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-[var(--glass-border)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition interactive-el"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">Navegación</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="nosotros.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Nosotros</span><span class="lang-en">About</span></a></li>
+                        <li><a href="servicios.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Servicios</span><span class="lang-en">Services</span></a></li>
+                        <li><a href="portafolio.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Portafolio</span><span class="lang-en">Portfolio</span></a></li>
+                        <li><a href="contacto.html" class="hover:text-[var(--accent)] transition interactive-el"><span class="lang-es">Contacto</span><span class="lang-en">Contact</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 tracking-wide uppercase text-xs text-[var(--text-sec)]">
+                        <span class="lang-es">Contacto Directo</span><span class="lang-en">Get in Touch</span>
+                    </h4>
+                    <a href="mailto:info@camposvision.com" class="block text-sm font-semibold mb-2 hover:text-[var(--accent)] interactive-el">info@camposvision.com</a>
+                    <p class="text-xs text-[var(--text-sec)] mt-4">
+                        <span class="lang-es">Cartagena, Colombia. <br> Disponible para proyectos mundiales.</span>
+                        <span class="lang-en">Cartagena, Colombia. <br> Available for global projects.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 text-[10px] text-[var(--text-sec)] uppercase tracking-widest flex flex-col md:flex-row justify-between items-center gap-2">
+                <p>&copy; 2026 Campo's Visión.</p>
+                <p><span class="lang-es">Desarrollado por el Senior Angel</span><span class="lang-en">Developed by Senior Angel</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="videoModal" class="fixed inset-0 z-[200] bg-[var(--bg-main)]/90 backdrop-blur-md hidden opacity-0 flex items-center justify-center p-4">
+        <button onclick="closeModal()" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-[var(--glass-border)] text-[var(--text-main)] flex items-center justify-center hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] text-xl z-10 transition-colors interactive-el"><i class="fa-solid fa-xmark"></i></button>
+        <div class="w-full max-w-5xl aspect-video glass-panel bg-black overflow-hidden relative" id="videoContainer"></div>
+    </div>
+
+    <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 items-end">
+        
+        <div id="ai-chat-modal" class="chat-modal glass-panel shadow-2xl overflow-hidden flex flex-col">
+            <div class="bg-[var(--glass-bg)] border-b border-[var(--glass-border)] p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center text-xs"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Visión AI</h4>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            <p class="text-[var(--text-sec)] text-[10px]"><span class="lang-es">Online</span><span class="lang-en">Online</span></p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleAIChat()" class="hover:text-[var(--accent)] transition-colors interactive-el p-1 text-[var(--text-sec)]"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-[200px] max-h-[320px]">
+                <div class="chat-msg-ai">
+                    <span class="lang-es">¡Hola! 👋 Soy <strong>Visión AI</strong>. ¿Te interesa alguno de los proyectos o quieres cotizar algo similar?</span>
+                    <span class="lang-en">Hi! 👋 I'm <strong>Visión AI</strong>. Interested in any project or want to quote something similar?</span>
+                </div>
+            </div>
+            
+            <div class="px-3 py-2 flex gap-2 flex-wrap border-t border-[var(--glass-border)]">
+                <button onclick="sendQuickMsg('¿Hacen bodas de destino fuera de Colombia?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Bodas destino</button>
+                <button onclick="sendQuickMsg('¿Cuánto cuesta un documental?')" class="lang-es text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Documentales</button>
+                <button onclick="sendQuickMsg('Do you do destination weddings outside Colombia?')" class="lang-en text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Destination</button>
+                <button onclick="sendQuickMsg('I want a project like Monster Energy')" class="lang-en text-[0.65rem] px-3 py-1.5 rounded-full border border-[var(--glass-border)] text-[var(--text-sec)] hover:bg-[var(--accent)] hover:text-[var(--accent-inv)] transition-colors interactive-el">Commercial</button>
+            </div>
+            
+            <div class="p-3 border-t border-[var(--glass-border)] flex gap-2 items-center bg-[var(--glass-bg)]">
+                <input type="text" id="ai-input" placeholder="Escribe un mensaje..." class="interactive-el flex-1 bg-transparent border-none outline-none text-sm text-[var(--text-main)] px-2 placeholder-[var(--text-sec)]">
+                <button onclick="sendAIMessage()" class="interactive-el w-9 h-9 shrink-0 rounded-full bg-[var(--accent)] text-[var(--accent-inv)] flex items-center justify-center hover:opacity-70 transition-opacity">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+        
+        <button onclick="toggleAIChat()" class="chat-fab-pulse relative interactive-el w-14 h-14 bg-[var(--accent)] text-[var(--accent-inv)] rounded-full shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition-transform" id="chat-fab">
+            <i class="fa-solid fa-robot" id="chat-fab-icon"></i>
+        </button>
+        <a href="https://wa.me/573003646036" target="_blank" class="interactive-el w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:bg-[#1ebd5a] hover:scale-110 transition-all flex items-center justify-center text-2xl">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+    const CAMPOS_SYSTEM_PROMPT=`Eres "Visión AI" de Campo's Visión, productora en Cartagena. Portafolio: bodas, corporativos (Monster Energy, Nescafé, Terpel, Hilton), documentales, videoclips, aéreos. WA: +57 300 123 4567. Responde en el idioma del usuario, conciso y cálido (máx 3-4 oraciones).`;
+    const chatHistory=[];
+    async function callCamposAI(msg){chatHistory.push({role:'user',content:msg});try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:CAMPOS_SYSTEM_PROMPT,messages:chatHistory})});const d=await r.json();const reply=d.content?.map(b=>b.text||'').join('')||'';if(reply)chatHistory.push({role:'assistant',content:reply});return reply||'¿Puedes repetir?';}catch(e){return'Error. <a href="https://wa.me/573003646036" target="_blank" class="underline">WhatsApp</a>';}}
+    function appendUserBubble(t){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-user';d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    function appendTyping(){const b=document.getElementById('chat-messages'),t=document.createElement('div');t.className='chat-msg-ai chat-typing';t.id='typing-indicator';t.innerHTML='<span></span><span></span><span></span>';b.appendChild(t);b.scrollTop=b.scrollHeight;return t;}
+    function appendAIBubble(h){const b=document.getElementById('chat-messages'),d=document.createElement('div');d.className='chat-msg-ai';d.innerHTML=h;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+    async function sendAIMessage(){const i=document.getElementById('ai-input'),m=i.value.trim();if(!m)return;appendUserBubble(m);i.value='';const t=appendTyping();const r=await callCamposAI(m);t.remove();appendAIBubble(r);}
+    async function sendQuickMsg(text){appendUserBubble(text);const t=appendTyping();const r=await callCamposAI(text);t.remove();appendAIBubble(r);}
+    document.getElementById('ai-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendAIMessage();});
+    function toggleAIChat(){const m=document.getElementById('ai-chat-modal'),i=document.getElementById('chat-fab-icon');m.classList.toggle('active');i.className=m.classList.contains('active')?'fa-solid fa-xmark':'fa-solid fa-robot';}
+    
+    // Filters (Logic original)
+    document.querySelectorAll('.filter-pill').forEach(pill=>{
+        pill.addEventListener('click',()=>{
+            document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+            pill.classList.add('active');
+            const f=pill.dataset.filter;
+            const items=document.querySelectorAll('.portfolio-item');
+            let count=0;
+            items.forEach(item=>{
+                if(f==='all'||item.dataset.cat===f){item.classList.remove('hidden-item');count++;}
+                else{item.classList.add('hidden-item');}
+            });
+            document.getElementById('item-count').textContent=count;
+        });
+    });
+    
+    // Tilt
+    document.querySelectorAll('.tilt-card').forEach(card=>{const g=card.querySelector('.glare');card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,rX=((y-r.height/2)/r.height)*-4,rY=((x-r.width/2)/r.width)*4;card.style.transform=`perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) scale3d(1.01,1.01,1.01)`;if(g){g.style.background=`radial-gradient(circle at ${x}px ${y}px,rgba(255,255,255,0.15),transparent 60%)`;g.style.opacity='1';}});card.addEventListener('mouseleave',()=>{card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)';card.style.transition='transform 0.5s ease';if(g)g.style.opacity='0';});card.addEventListener('mouseenter',()=>card.style.transition='none');});
+    
+    // Modal
+    const modal=document.getElementById('videoModal'),vc=document.getElementById('videoContainer');
+    function openModal(url){modal.classList.remove('hidden');setTimeout(()=>modal.classList.remove('opacity-0'),10);vc.innerHTML=`<iframe src="${url}" class="w-full h-full" frameborder="0" allow="autoplay;fullscreen" allowfullscreen></iframe>`;document.body.style.overflow='hidden';}
+    function closeModal(){modal.classList.add('opacity-0');setTimeout(()=>{modal.classList.add('hidden');vc.innerHTML='';},300);document.body.style.overflow='auto';}
+    modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+    
+    // Nav + reveal
+    const nav=document.getElementById('navbar');window.addEventListener('scroll',()=>{nav.classList.toggle('py-3',window.scrollY>50);nav.classList.toggle('py-4',window.scrollY<=50);});
+    function toggleMobileMenu(){const m=document.getElementById('mobile-menu'),b=document.getElementById('hamburger-btn');m.classList.toggle('open');b.innerHTML=m.classList.contains('open')?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>';}
+    const ro=new IntersectionObserver((entries,obs)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    function toggleLanguage(){const l=document.documentElement.getAttribute('lang')==='es'?'en':'es';document.documentElement.setAttribute('lang',l);const i=document.getElementById('ai-input');if(i)i.placeholder=l==='en'?'Type a message...':'Escribe un mensaje...';}
+    function toggleTheme(){const h=document.documentElement,icons=document.querySelectorAll('#theme-icon,#theme-icon-mobile');if(h.classList.contains('dark')){h.classList.remove('dark');icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-moon"></i>');}else{h.classList.add('dark');icons.forEach(i=>i.innerHTML='<i class="fa-solid fa-sun"></i>');}}
+    const cD=document.querySelector('.custom-cursor-dot'),cO=document.querySelector('.custom-cursor-outline');if(window.matchMedia("(pointer:fine)").matches&&cD){window.addEventListener('mousemove',e=>{cD.style.left=`${e.clientX}px`;cD.style.top=`${e.clientY}px`;cO.animate({left:`${e.clientX}px`,top:`${e.clientY}px`},{duration:500,fill:"forwards"});});document.querySelectorAll('.interactive-el,a,button,input,textarea').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));});}
+    </script>
+</body>
+</html>
